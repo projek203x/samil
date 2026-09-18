@@ -9,8 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #050506; --panel: #120d0b; --panel-2: #1c1412;
-    --ink: #f5f0ea; --muted: #8a7d78;
+    --bg: #050506;
+    --panel: #120d0b;
+    --panel-2: #1c1412;
+    --ink: #f5f0ea;
+    --muted: #8a7d78;
     --line: #e9edf5;
     --ok: #34d399;
     --shadow: 0 8px 0 #000, 0 14px 26px rgba(0,0,0,.6);
@@ -25,6 +28,7 @@
     --shadow: 0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
     --footer-gray: #6b7280;
   }
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; height: 100%; }
 
@@ -42,6 +46,7 @@
     position: relative; overflow: hidden;
     transition: background .5s ease, color .4s ease;
   }
+
   body::before {
     content: ""; position: fixed; inset: 0;
     background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
@@ -51,12 +56,15 @@
     background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
     background-size: 10px 10px;
   }
+
   .vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,.85) 100%);
-    mix-blend-mode: multiply; animation: breathe 6s ease-in-out infinite;
+    mix-blend-mode: multiply;
+    animation: breathe 6s ease-in-out infinite;
   }
   html[data-theme="comic"] .vignette { opacity: 0; }
+
   .embers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .ember {
     position: absolute; width: 4px; height: 4px;
@@ -65,6 +73,7 @@
     animation: rise linear infinite;
   }
   html[data-theme="comic"] .embers { display: none; }
+
   .speed-lines {
     position: fixed; top: -40px; right: -40px;
     width: 240px; height: 240px;
@@ -84,6 +93,7 @@
     display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 16px; padding: 4px 0;
   }
+
   .back {
     position: absolute; top: 0; left: 0;
     font-family: "Orbitron", sans-serif;
@@ -124,10 +134,12 @@
   .panel::before {
     content: ""; position: absolute; inset: -30px;
     background: radial-gradient(circle at 50% 0%, rgba(255,90,0,.28), transparent 60%);
-    pointer-events: none; animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+    animation: pulseGlow 4s ease-in-out infinite;
     z-index: -1; border-radius: 30px;
   }
   html[data-theme="comic"] .panel::before { display: none; }
+
   .panel-label {
     position: absolute; top: -14px; left: 18px;
     background: linear-gradient(180deg, #ffb340, #ff8a00);
@@ -139,6 +151,7 @@
     box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,138,0,.8);
     z-index: 2; white-space: nowrap;
   }
+
   .title {
     font-family: "Bebas Neue", "Impact", sans-serif;
     font-size: 44px; letter-spacing: 6px;
@@ -324,12 +337,15 @@
 </style>
 </head>
 <body>
+
   <div class="vignette"></div>
   <div class="embers" id="embers"></div>
   <div class="speed-lines"></div>
 
   <main class="wrap">
+
     <a href="index.html" class="back">&lt; KEMBALI</a>
+
     <h1 class="mini-logo">SMXL</h1>
 
     <section class="panel">
@@ -341,10 +357,12 @@
           <label for="username">Username :</label>
           <input type="text" id="username" placeholder="Masukkan username" />
         </div>
+
         <div class="field">
           <label for="password">Password :</label>
           <input type="password" id="password" placeholder="Masukkan password" />
         </div>
+
         <button type="submit" class="btn-login" id="btnSubmit">LOGIN</button>
 
         <a href="daftar.html" class="btn-daftar">DAFTAR</a>
@@ -357,17 +375,27 @@
       <button id="btnComic" type="button">KOMIK</button>
       <button id="btnDark" type="button">DARK</button>
     </div>
+
   </main>
 
-  <footer><b>@created by samil</b></footer>
+  <footer>
+    <b>@created by samil</b>
+  </footer>
 
 <script>
+  /* =========================================================
+     KONFIGURASI BOT
+     Ganti sesuai alamat bot Termux kamu.
+     - Lokal (HP sama)  : http://127.0.0.1:8080
+     - Tunnel cloudflare: https://xxxx.trycloudflare.com
+     ========================================================= */
   const BOT_API_URL = "http://127.0.0.1:8080";
 
-  /* THEME */
+  /* ============ THEME ============ */
   const html = document.documentElement;
   const btnComic = document.getElementById('btnComic');
   const btnDark  = document.getElementById('btnDark');
+
   function setTheme(theme) {
     html.setAttribute('data-theme', theme);
     btnComic.classList.toggle('active', theme === 'comic');
@@ -380,7 +408,7 @@
   btnComic.addEventListener('click', () => setTheme('comic'));
   btnDark.addEventListener('click', () => setTheme('dark'));
 
-  /* EMBER */
+  /* ============ EMBER PARTICLES ============ */
   const emberBox = document.getElementById('embers');
   for (let i = 0; i < 18; i++) {
     const e = document.createElement('span');
@@ -395,10 +423,11 @@
     emberBox.appendChild(e);
   }
 
-  /* LOGIN */
+  /* ============ FORM LOGIN ============ */
   const form = document.getElementById('loginForm');
   const msg = document.getElementById('message');
   const btnSubmit = document.getElementById('btnSubmit');
+
   function showMessage(text, type) {
     msg.textContent = text;
     msg.className = 'message show ' + type;
@@ -408,6 +437,7 @@
     e.preventDefault();
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
+
     if (!user || !pass) {
       showMessage('USERNAME & PASSWORD WAJIB DIISI', 'err');
       return;
@@ -426,7 +456,19 @@
 
       if (data.status === 'ok') {
         showMessage('LOGIN BERHASIL (DEMO)', 'ok');
-        setTimeout(() => { document.getElementById('password').value = ''; }, 600);
+
+        /* Simpan username + role untuk halaman akun.html */
+        try {
+          localStorage.setItem('smxl-user', user);
+          if (data.role) localStorage.setItem('smxl-role', data.role);
+        } catch (e) {}
+
+        /* Redirect ke dashboard akun setelah 800ms */
+        setTimeout(() => {
+          document.getElementById('password').value = '';
+          location.href = 'akun.html';
+        }, 800);
+
       } else if (data.status === 'pending') {
         showMessage('AKUN BELUM DI-ACC OWNER', 'err');
       } else {
