@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SMXL — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #050506;
@@ -11,21 +14,19 @@
     --panel-2: #171010;
     --ink: #f5f0ea;
     --muted: #8a7d78;
-    --accent: #ff6a00;
-    --accent-2: #ff2400;
-    --accent-3: #ffcc00;
+    --accent: #ff8a00;
+    --accent-2: #ff4500;
+    --accent-3: #ffb340;
     --line: #e9edf5;
     --shadow: 0 10px 0 #000, 0 14px 24px rgba(0,0,0,.6);
   }
 
-  /* ====== TEMA DARK (default) ====== */
   html[data-theme="dark"] {
     --bg: #050506;
     --ink: #f5f0ea;
     --muted: #8a7d78;
   }
 
-  /* ====== TEMA KOMIK ====== */
   html[data-theme="comic"] {
     --bg: #f2f2f2;
     --panel: #ffffff;
@@ -45,10 +46,11 @@
   }
 
   body {
-    font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
+    font-weight: 600;
     background:
-      radial-gradient(circle at 20% 10%, rgba(255,106,0,.14), transparent 45%),
-      radial-gradient(circle at 85% 90%, rgba(255,36,0,.18), transparent 45%),
+      radial-gradient(circle at 20% 10%, rgba(255,138,0,.16), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(255,69,0,.2), transparent 45%),
       var(--bg);
     color: var(--ink);
     display: flex;
@@ -72,7 +74,6 @@
     pointer-events: none;
     z-index: 0;
   }
-
   html[data-theme="comic"] body::before {
     background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
     background-size: 10px 10px;
@@ -88,15 +89,14 @@
     mix-blend-mode: multiply;
     animation: breathe 6s ease-in-out infinite;
   }
-
   html[data-theme="comic"] .vignette { opacity: 0; }
 
-  /* Ember / percikan api */
+  /* Ember particles */
   .embers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .ember {
     position: absolute;
     width: 4px; height: 4px;
-    background: radial-gradient(circle, #ffcc00, #ff2400 60%, transparent 70%);
+    background: radial-gradient(circle, #ffcc66, #ff4500 60%, transparent 70%);
     border-radius: 50%;
     opacity: 0;
     animation: rise linear infinite;
@@ -116,47 +116,46 @@
     gap: 26px;
   }
 
-  /* ========== LOGO SMXL 3D FIERY ========== */
+  /* ===== LOGO SMXL ORANYE CERAH ===== */
   .logo-stage {
     position: relative;
     display: inline-block;
-    padding: 12px 6px;
+    padding: 14px 6px;
   }
 
   .logo-glow {
     position: absolute;
-    inset: -40px;
-    background: radial-gradient(circle, rgba(255,106,0,.55), rgba(255,36,0,.25) 40%, transparent 70%);
-    filter: blur(18px);
+    inset: -50px;
+    background: radial-gradient(circle, rgba(255,160,0,.75), rgba(255,90,0,.35) 40%, transparent 72%);
+    filter: blur(22px);
     animation: pulseGlow 2.6s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
   }
   html[data-theme="comic"] .logo-glow {
-    background: radial-gradient(circle, rgba(255,106,0,.35), transparent 70%);
+    background: radial-gradient(circle, rgba(255,140,0,.5), transparent 70%);
   }
 
   .logo {
     position: relative;
     z-index: 1;
-    font-family: "Impact", "Haettenschweiler", "Arial Black", sans-serif;
-    font-size: clamp(64px, 22vw, 108px);
-    letter-spacing: -3px;
+    font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
+    font-size: clamp(80px, 26vw, 130px);
+    letter-spacing: 2px;
     margin: 0;
     line-height: 1;
-    font-style: italic;
     transform: skewX(-8deg);
-    background: linear-gradient(180deg, #ffcf8a 0%, #ff8a1f 35%, #ff4500 65%, #7a1200 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #ff9a1f;
     text-shadow:
-      0 0 2px #000,
-      2px 2px 0 #3a0a00,
-      4px 4px 0 #230600,
+      0 0 6px #ffb340,
+      0 0 14px #ff8a00,
+      0 0 28px #ff4500,
+      0 0 48px #ff2400,
+      2px 2px 0 #4a1a00,
+      4px 4px 0 #2a0f00,
       6px 6px 0 #120300,
       8px 8px 0 #000;
-    filter: drop-shadow(0 0 14px rgba(255,90,0,.75)) drop-shadow(0 0 30px rgba(255,36,0,.4));
+    filter: drop-shadow(0 0 16px rgba(255,140,0,.9));
     animation: flicker 4.5s infinite;
   }
 
@@ -166,30 +165,37 @@
     inset: 0;
     font-family: inherit;
     font-size: inherit;
-    font-style: inherit;
     letter-spacing: inherit;
-    background: inherit;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    transform: translate(2px, -2px);
+    color: #ffd580;
+    transform: translate(1.5px, -1.5px);
     mix-blend-mode: screen;
     opacity: .55;
     animation: glitch 3.2s infinite;
     pointer-events: none;
+    text-shadow: 0 0 12px #ffcc66;
+  }
+
+  html[data-theme="comic"] .logo {
+    color: #ff8a00;
+    text-shadow:
+      3px 3px 0 #000,
+      5px 5px 0 #000;
+    filter: none;
   }
 
   .tagline {
     text-align: center;
     color: var(--muted);
-    font-size: 13px;
-    letter-spacing: 5px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 6px;
     text-transform: uppercase;
     margin: 0;
-    text-shadow: 0 0 8px rgba(255,90,0,.4);
+    text-shadow: 0 0 8px rgba(255,138,0,.6);
   }
 
-  /* ========== THEME SWITCH ========== */
+  /* ===== THEME SWITCH ===== */
   .theme-switch {
     display: flex;
     align-items: center;
@@ -198,12 +204,13 @@
     background: var(--panel-2);
     border: 2.5px solid var(--line);
     border-radius: 999px;
-    box-shadow: 0 4px 0 #000, 0 0 18px rgba(255,90,0,.25);
+    box-shadow: 0 4px 0 #000, 0 0 18px rgba(255,138,0,.3);
   }
 
   .theme-switch button {
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 13px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
     letter-spacing: 2px;
     padding: 8px 16px;
     border: 2px solid var(--line);
@@ -215,15 +222,14 @@
   }
 
   .theme-switch button.active {
-    background: linear-gradient(180deg, var(--accent-3), var(--accent));
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
     color: #0b0b0b;
-    box-shadow: 0 0 14px rgba(255,106,0,.8), 0 0 26px rgba(255,36,0,.5);
+    box-shadow: 0 0 14px rgba(255,160,0,.9), 0 0 26px rgba(255,90,0,.6);
     transform: scale(1.05);
   }
-
   .theme-switch button:active { transform: scale(.94); }
 
-  /* ========== BUTTONS ========== */
+  /* ===== BUTTONS ===== */
   .actions {
     width: 100%;
     display: flex;
@@ -236,18 +242,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
     padding: 18px 20px;
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 22px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900;
+    font-size: 18px;
     letter-spacing: 4px;
     text-decoration: none;
     color: #0b0b0b;
-    background: linear-gradient(180deg, #ffcc00, #ff6a00);
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
     border: 3px solid var(--line);
     border-radius: 12px;
-    box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,60,0,.35), 0 0 22px rgba(255,106,0,.45);
+    box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,90,0,.4), 0 0 24px rgba(255,138,0,.5);
     cursor: pointer;
     user-select: none;
     transition: transform .12s ease, box-shadow .12s ease, background .2s ease;
@@ -261,10 +268,9 @@
   }
 
   .btn.store {
-    background: linear-gradient(180deg, #ff2400, #7a1200);
+    background: linear-gradient(180deg, #ff4500, #7a1200);
     color: #fff;
   }
-
   html[data-theme="comic"] .btn.store {
     background: #000;
     color: #fff;
@@ -275,7 +281,7 @@
     position: absolute;
     top: 0; left: -60%;
     width: 40%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,.7), transparent);
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
     transform: skewX(-20deg);
     transition: left .5s ease;
   }
@@ -287,9 +293,14 @@
     box-shadow: 0 2px 0 #000, 0 4px 8px rgba(0,0,0,.5);
   }
 
-  .btn .icon { font-size: 20px; }
+  .btn .mark {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    opacity: .85;
+  }
 
-  /* ========== FOOTER ========== */
+  /* ===== FOOTER ===== */
   footer {
     position: relative;
     z-index: 1;
@@ -297,44 +308,38 @@
     max-width: 420px;
     text-align: center;
     color: var(--muted);
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
     font-size: 13px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin-top: 28px;
     padding-top: 14px;
     border-top: 1px dashed rgba(255,255,255,.12);
   }
+  footer b { color: #ff8a00; text-shadow: 0 0 10px rgba(255,138,0,.9); }
+  html[data-theme="comic"] footer { border-top-color: rgba(0,0,0,.3); }
+  html[data-theme="comic"] footer b { color: #ff4500; text-shadow: none; }
 
-  footer b { color: var(--accent); text-shadow: 0 0 8px rgba(255,106,0,.8); }
-
-  html[data-theme="comic"] footer {
-    border-top-color: rgba(0,0,0,.3);
-  }
-  html[data-theme="comic"] footer b { color: #ff2400; text-shadow: none; }
-
-  /* ========== KEYFRAMES ========== */
+  /* ===== KEYFRAMES ===== */
   @keyframes pulseGlow {
-    0%, 100% { opacity: .9; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.08); }
+    0%, 100% { opacity: .85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
   }
-
   @keyframes flicker {
     0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
     20%, 24%, 55% { opacity: .78; }
   }
-
   @keyframes glitch {
-    0%, 92%, 100% { transform: translate(2px, -2px); opacity: .55; }
-    93% { transform: translate(-3px, 2px); opacity: .9; }
+    0%, 92%, 100% { transform: translate(1.5px, -1.5px); opacity: .55; }
+    93% { transform: translate(-3px, 2px); opacity: .95; }
     94% { transform: translate(3px, -3px); opacity: .7; }
     95% { transform: translate(-2px, 3px); opacity: .85; }
-    96% { transform: translate(2px, -2px); opacity: .55; }
+    96% { transform: translate(1.5px, -1.5px); opacity: .55; }
   }
-
   @keyframes breathe {
     0%, 100% { opacity: .85; }
     50% { opacity: 1; }
   }
-
   @keyframes rise {
     0% { transform: translateY(0) scale(1); opacity: 0; }
     10% { opacity: 1; }
@@ -342,9 +347,9 @@
   }
 
   @media (max-width: 360px) {
-    .logo { font-size: 60px; }
-    .btn { font-size: 18px; padding: 15px; }
-    .theme-switch button { font-size: 11px; padding: 7px 12px; }
+    .logo { font-size: 76px; }
+    .btn { font-size: 16px; padding: 15px; letter-spacing: 3px; }
+    .theme-switch button { font-size: 10px; padding: 7px 12px; }
   }
 </style>
 </head>
@@ -355,13 +360,13 @@
 
   <main class="wrap">
 
-    <!-- LOGO 3D FIERY -->
+    <!-- LOGO -->
     <div class="logo-stage">
       <span class="logo-glow"></span>
       <h1 class="logo">SMXL</h1>
     </div>
 
-    <p class="tagline">Comic • Dark • Horror</p>
+    <p class="tagline">Comic &middot; Dark &middot; Horror</p>
 
     <!-- THEME SWITCH -->
     <div class="theme-switch" role="group" aria-label="Pilih Tema">
@@ -372,10 +377,10 @@
     <!-- ACTIONS -->
     <div class="actions">
       <a href="login.html" class="btn" id="btnLogin">
-        <span class="icon">🔐</span> LOGIN
+        <span class="mark">[+]</span> LOGIN
       </a>
       <button class="btn store" id="btnStore" type="button">
-        <span class="icon">🛒</span> STORE
+        <span class="mark">[&gt;]</span> STORE
       </button>
     </div>
   </main>
@@ -385,7 +390,7 @@
   </footer>
 
 <script>
-  /* ====== TEMA TOGGLE ====== */
+  /* THEME TOGGLE */
   const html = document.documentElement;
   const btnComic = document.getElementById('btnComic');
   const btnDark  = document.getElementById('btnDark');
@@ -397,7 +402,6 @@
     try { localStorage.setItem('smxl-theme', theme); } catch(e) {}
   }
 
-  // Muat preferensi tema
   let saved = 'dark';
   try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
   setTheme(saved);
@@ -405,10 +409,9 @@
   btnComic.addEventListener('click', () => setTheme('comic'));
   btnDark.addEventListener('click', () => setTheme('dark'));
 
-  /* ====== EMBER PARTICLES ====== */
+  /* EMBER PARTICLES */
   const emberBox = document.getElementById('embers');
-  const EMBER_COUNT = 22;
-  for (let i = 0; i < EMBER_COUNT; i++) {
+  for (let i = 0; i < 22; i++) {
     const e = document.createElement('span');
     e.className = 'ember';
     e.style.left = Math.random() * 100 + 'vw';
@@ -421,7 +424,7 @@
     emberBox.appendChild(e);
   }
 
-  /* ====== KLIK ====== */
+  /* KLIK */
   const btnStore = document.getElementById('btnStore');
   btnStore.addEventListener('click', () => {
     btnStore.style.transform = 'scale(.95)';
@@ -438,4 +441,4 @@
   });
 </script>
 </body>
-  </html>
+        </html>
