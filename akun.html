@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SMXL — Akun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050506;
+    --panel: #120d0b;
+    --panel-2: #1c1412;
+    --ink: #f5f0ea;
+    --muted: #8a7d78;
+    --line: #e9edf5;
+    --ok: #34d399;
+    --warn: #ffb340;
+    --dev: #ff4500;
+    --shadow: 0 8px 0 #000, 0 14px 26px rgba(0,0,0,.6);
+    --footer-gray: #9ca3af;
+  }
+  html[data-theme="dark"] {
+    --bg: #050506; --ink: #f5f0ea; --muted: #8a7d78; --footer-gray: #9ca3af;
+  }
+  html[data-theme="comic"] {
+    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7;
+    --ink: #0b0b0b; --muted: #4a4a4a; --line: #0b0b0b;
+    --shadow: 0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
+    --footer-gray: #6b7280;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
+
+  body {
+    font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
+    font-weight: 600;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,138,0,.18), transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(255,69,0,.22), transparent 45%),
+      var(--bg);
+    color: var(--ink);
+    display: flex; flex-direction: column;
+    min-height: 100dvh;
+    padding: 16px 16px 12px;
+    position: relative;
+    overflow-x: hidden;
+    transition: background .5s ease, color .4s ease;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 14px 14px; pointer-events: none; z-index: 0;
+  }
+  html[data-theme="comic"] body::before {
+    background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+  .vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,.85) 100%);
+    mix-blend-mode: multiply; animation: breathe 6s ease-in-out infinite;
+  }
+  html[data-theme="comic"] .vignette { opacity: 0; }
+
+  .speed-lines {
+    position: fixed; top: -40px; right: -40px;
+    width: 240px; height: 240px;
+    background: repeating-linear-gradient(135deg, rgba(255,138,0,.24) 0 4px, transparent 4px 14px);
+    transform: rotate(15deg); pointer-events: none; opacity: .9;
+    mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+    animation: drift 8s ease-in-out infinite alternate;
+  }
+  html[data-theme="comic"] .speed-lines {
+    background: repeating-linear-gradient(135deg, rgba(0,0,0,.3) 0 4px, transparent 4px 14px);
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px; margin: 0 auto;
+    flex: 1;
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 4px 0 8px;
+  }
+
+  /* ==== HEADER ==== */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+  }
+  .back {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 11px; letter-spacing: 2px;
+    color: var(--muted); text-decoration: none;
+    padding: 6px 10px;
+    border: 2px solid var(--muted); border-radius: 8px;
+    transition: color .2s, border-color .2s, transform .12s;
+  }
+  .back:hover { color: #ff8a00; border-color: #ff8a00; }
+  .back:active { transform: scale(.94); }
+
+  .mini-logo {
+    font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
+    font-size: 28px; letter-spacing: 2px;
+    transform: skewX(-8deg); margin: 0; line-height: 1;
+    color: #ff9a1f;
+    text-shadow:
+      0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 20px #ff4500,
+      2px 2px 0 #4a1a00, 3px 3px 0 #120300, 4px 4px 0 #000;
+    filter: drop-shadow(0 0 10px rgba(255,140,0,.85));
+    animation: flicker 4s infinite;
+  }
+  html[data-theme="comic"] .mini-logo {
+    color: #ff8a00; text-shadow: 2px 2px 0 #000; filter: none;
+  }
+
+  /* ==== PANEL AKUN ==== */
+  .panel {
+    position: relative; width: 100%;
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow), 0 0 30px rgba(255,90,0,.4);
+    padding: 34px 18px 20px; margin-top: 6px;
+    animation: slideUp .55s cubic-bezier(.2,.9,.3,1.2) both;
+    overflow: visible;
+  }
+  .panel::before {
+    content: ""; position: absolute; inset: -30px;
+    background: radial-gradient(circle at 50% 0%, rgba(255,90,0,.28), transparent 60%);
+    pointer-events: none; animation: pulseGlow 4s ease-in-out infinite;
+    z-index: -1; border-radius: 30px;
+  }
+  html[data-theme="comic"] .panel::before { display: none; }
+  .panel-label {
+    position: absolute; top: -14px; left: 18px;
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
+    color: #0b0b0b;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; letter-spacing: 2px; font-size: 10px;
+    padding: 5px 10px;
+    border: 3px solid #000; border-radius: 8px;
+    box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,138,0,.8);
+    z-index: 2; white-space: nowrap;
+  }
+  .title {
+    font-family: "Bebas Neue", "Impact", sans-serif;
+    font-size: 40px; letter-spacing: 6px;
+    margin: 0 0 4px; line-height: 1;
+    text-align: center; color: #ff9a1f;
+    text-shadow:
+      0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 26px #ff4500,
+      2px 2px 0 #4a1a00, 4px 4px 0 #120300, 6px 6px 0 #000;
+    filter: drop-shadow(0 0 10px rgba(255,140,0,.8));
+    animation: flicker 5s infinite;
+  }
+  html[data-theme="comic"] .title {
+    color: #ff8a00;
+    text-shadow: 3px 3px 0 #000, 5px 5px 0 #000;
+    filter: none;
+  }
+  .sub {
+    text-align: center; color: var(--muted);
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px;
+    letter-spacing: 2px; margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  /* ==== INFO AKUN ==== */
+  .info {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .info-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--panel-2);
+    border: 2.5px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 3px 0 #000;
+  }
+  html[data-theme="comic"] .info-row { box-shadow: 0 3px 0 #000; }
+  .info-label {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px;
+    letter-spacing: 2px; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .info-value {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 13px;
+    color: var(--ink); letter-spacing: 1px;
+    text-align: right;
+    max-width: 60%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .role-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 10px;
+    letter-spacing: 2px;
+    color: #0b0b0b;
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
+    border: 2px solid #000; border-radius: 6px;
+    box-shadow: 0 0 14px rgba(255,138,0,.8);
+  }
+  .role-badge.dev {
+    background: linear-gradient(180deg, #ff4500, #7a1200);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(255,69,0,.9);
+  }
+  .role-badge.reseller {
+    background: linear-gradient(180deg, #ffcc00, #ff8a00);
+    color: #0b0b0b;
+  }
+  .role-badge.user {
+    background: linear-gradient(180deg, #9ca3af, #4b5563);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(156,163,175,.6);
+  }
+  .role-badge.pending {
+    background: linear-gradient(180deg, #6b7280, #374151);
+    color: #fbbf24;
+    box-shadow: 0 0 10px rgba(107,114,128,.6);
+  }
+
+  /* ==== MENU ==== */
+  .menu-title {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px;
+    letter-spacing: 3px; color: var(--muted);
+    text-transform: uppercase;
+    margin: 4px 0 8px;
+  }
+  .menu {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .menu-item {
+    display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: center;
+    gap: 6px;
+    padding: 12px 12px;
+    background: var(--panel-2);
+    border: 2.5px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 4px 0 #000;
+    text-decoration: none; color: var(--ink);
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s, background .2s;
+    position: relative; overflow: hidden;
+  }
+  .menu-item::before {
+    content: ""; position: absolute;
+    top: 0; left: -60%; width: 40%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,180,60,.35), transparent);
+    transform: skewX(-20deg); transition: left .5s ease;
+  }
+  .menu-item:hover::before { left: 130%; }
+  .menu-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #000, 0 0 18px rgba(255,138,0,.5);
+  }
+  .menu-item:active {
+    transform: translateY(2px) scale(.98);
+    box-shadow: 0 2px 0 #000;
+  }
+  .menu-icon {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 14px;
+    color: #ff8a00;
+    text-shadow: 0 0 10px rgba(255,138,0,.9);
+  }
+  .menu-name {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink);
+  }
+  .menu-desc {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .5px;
+  }
+
+  .menu-item.full { grid-column: 1 / -1; }
+  .menu-item.danger .menu-icon { color: #ff4500; text-shadow: 0 0 10px rgba(255,69,0,.9); }
+
+  /* ==== STATUS LOADING ==== */
+  .loading {
+    text-align: center;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    padding: 8px;
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+  footer {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px; margin: 0 auto;
+    padding-top: 8px; text-align: center;
+    color: var(--footer-gray);
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 12px; letter-spacing: 2px;
+    border-top: 1px dashed rgba(150,150,150,.35);
+    flex-shrink: 0;
+  }
+  footer b { color: var(--footer-gray); font-weight: 700; }
+
+  @keyframes slideUp {
+    0% { opacity: 0; transform: translateY(28px) rotate(-1deg); }
+    100% { opacity: 1; transform: translateY(0) rotate(0); }
+  }
+  @keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: .8; }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: .8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: .85; }
+    50% { opacity: 1; }
+  }
+  @keyframes drift {
+    0% { transform: rotate(15deg) translate(0,0); }
+    100% { transform: rotate(15deg) translate(-20px,20px); }
+  }
+
+  @media (max-width: 360px) {
+    .title { font-size: 34px; }
+    .panel { padding: 30px 14px 18px; }
+    .menu-name { font-size: 10px; }
+    .menu-desc { font-size: 10px; }
+    .info-value { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+  <div class="vignette"></div>
+  <div class="speed-lines"></div>
+
+  <main class="wrap">
+
+    <!-- HEADER -->
+    <div class="header">
+      <a href="index.html" class="back">&lt; KEMBALI</a>
+      <h1 class="mini-logo">SMXL</h1>
+    </div>
+
+    <!-- PANEL AKUN -->
+    <section class="panel">
+      <span class="panel-label">DASHBOARD AKUN</span>
+      <h2 class="title">AKUN</h2>
+      <p class="sub">Informasi & Menu</p>
+
+      <div class="loading" id="loadingText">MEMUAT DATA AKUN...</div>
+
+      <div class="info" id="infoBox" style="display:none;">
+        <div class="info-row">
+          <span class="info-label">Username</span>
+          <span class="info-value" id="valUsername">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Role</span>
+          <span class="info-value" id="valRole">
+            <span class="role-badge user" id="roleBadge">USER</span>
+          </span>
+        </div>
+      </div>
+
+      <p class="menu-title">Menu :</p>
+      <div class="menu" id="menuBox">
+        <a class="menu-item" href="dashboard.html">
+          <span class="menu-icon">[T]</span>
+          <span class="menu-name">TEMA</span>
+          <span class="menu-desc">Ganti mode Komik/Dark</span>
+        </a>
+        <a class="menu-item" href="daftar.html">
+          <span class="menu-icon">[+]</span>
+          <span class="menu-name">DAFTAR</span>
+          <span class="menu-desc">Buat akun baru</span>
+        </a>
+        <a class="menu-item" href="index.html">
+          <span class="menu-icon">[H]</span>
+          <span class="menu-name">HOME</span>
+          <span class="menu-desc">Halaman utama</span>
+        </a>
+        <a class="menu-item" href="login.html">
+          <span class="menu-icon">[L]</span>
+          <span class="menu-name">LOGIN</span>
+          <span class="menu-desc">Masuk akun lain</span>
+        </a>
+        <a class="menu-item full danger" href="#" id="btnLogout">
+          <span class="menu-icon">[X]</span>
+          <span class="menu-name">KELUAR</span>
+          <span class="menu-desc">Hapus sesi akun di perangkat ini</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer><b>@created by samil</b></footer>
+
+<script>
+/* =========================================================
+   KONFIG
+   ========================================================= */
+const BOT_API_URL = "http://127.0.0.1:8080";
+
+/* THEME (dipakai bersama) */
+const html = document.documentElement;
+let saved = 'dark';
+try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
+html.setAttribute('data-theme', saved);
+
+/* =========================================================
+   AMBIL DATA USER DARI SERVER (bot)
+   - Web kirim username yang sedang login
+   - Server balas role: developer / reseller / user / pending
+   ========================================================= */
+const loadingText = document.getElementById('loadingText');
+const infoBox     = document.getElementById('infoBox');
+const valUsername = document.getElementById('valUsername');
+const roleBadge   = document.getElementById('roleBadge');
+
+async function loadAccount() {
+  // Ambil username dari localStorage (disimpan saat login)
+  let username = "";
+  try { username = localStorage.getItem('smxl-user') || ""; } catch(e) {}
+
+  // Kalau belum login, tampilkan sebagai GUEST
+  if (!username) {
+    showAccount("(belum login)", "guest");
+    return;
+  }
+
+  valUsername.textContent = username;
+
+  try {
+    const res = await fetch(BOT_API_URL + "/role?username=" + encodeURIComponent(username));
+    const data = await res.json();
+
+    let role = (data && data.role) ? data.role : "user";
+    showAccount(username, role);
+
+  } catch (err) {
+    console.warn("Gagal ambil role dari server:", err);
+    // Fallback: cek dari localStorage (kalau pernah di-set saat login)
+    let cachedRole = "user";
+    try { cachedRole = localStorage.getItem('smxl-role') || 'user'; } catch(e) {}
+    showAccount(username, cachedRole);
+  }
+}
+
+function showAccount(username, role) {
+  loadingText.style.display = 'none';
+  infoBox.style.display = 'flex';
+  valUsername.textContent = username;
+
+  // Normalisasi role
+  const r = String(role).toLowerCase();
+  let label = "USER";
+  let cls = "user";
+  if (r === "developer" || r === "dev") { label = "DEVELOPER"; cls = "dev"; }
+  else if (r === "reseller")            { label = "RESELLER";  cls = "reseller"; }
+  else if (r === "pending")             { label = "PENDING ACC"; cls = "pending"; }
+  else if (r === "guest")               { label = "GUEST"; cls = "pending"; }
+  else                                   { label = "USER"; cls = "user"; }
+
+  roleBadge.textContent = label;
+  roleBadge.className = "role-badge " + cls;
+
+  // Menu tambahan untuk developer / reseller
+  if (cls === "dev" || cls === "reseller") {
+    // Tambahkan menu khusus sebelum tombol KELUAR
+    const logout = document.getElementById('btnLogout');
+    if (!document.getElementById('menuManage')) {
+      const manage = document.createElement('a');
+      manage.className = 'menu-item full';
+      manage.id = 'menuManage';
+      manage.href = '#';
+      manage.innerHTML = `
+        <span class="menu-icon">[M]</span>
+        <span class="menu-name">MANAGE USER</span>
+        <span class="menu-desc">Kelola pendaftaran lewat bot Telegram</span>
+      `;
+      manage.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Kelola user dilakukan lewat Bot Telegram (@S4MX1L).\\n\\nPerintah:\\n/list\\n/acc SMXL-XXXX\\n/reject SMXL-XXXX');
+      });
+      logout.parentNode.insertBefore(manage, logout);
+    }
+  }
+}
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+document.getElementById('btnLogout').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!confirm('Keluar dari akun ini?')) return;
+  try {
+    localStorage.removeItem('smxl-user');
+    localStorage.removeItem('smxl-role');
+  } catch(e) {}
+  location.href = 'login.html';
+});
+
+/* Jalankan */
+loadAccount();
+</script>
+</body>
+  </html>
