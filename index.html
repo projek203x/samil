@@ -42,11 +42,7 @@
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
+  html, body { margin: 0; padding: 0; height: 100%; }
 
   body {
     font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
@@ -80,10 +76,7 @@
   }
 
   .vignette {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,.85) 100%);
     mix-blend-mode: multiply;
     animation: breathe 6s ease-in-out infinite;
@@ -92,86 +85,54 @@
 
   .embers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .ember {
-    position: absolute;
-    width: 4px; height: 4px;
+    position: absolute; width: 4px; height: 4px;
     background: radial-gradient(circle, #ffcc66, #ff4500 60%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0;
+    border-radius: 50%; opacity: 0;
     animation: rise linear infinite;
   }
   html[data-theme="comic"] .embers { display: none; }
 
-  /* ===== LAYOUT UTAMA: full height, tanpa scroll ===== */
   .wrap {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px; margin: 0 auto;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    padding: 6px 0;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 18px; padding: 6px 0;
   }
 
-  /* LOGO */
-  .logo-stage {
-    position: relative;
-    display: inline-block;
-    padding: 6px 4px;
-  }
+  .logo-stage { position: relative; display: inline-block; padding: 6px 4px; }
 
   .logo-glow {
-    position: absolute;
-    inset: -40px;
+    position: absolute; inset: -40px;
     background: radial-gradient(circle, rgba(255,160,0,.75), rgba(255,90,0,.35) 40%, transparent 72%);
     filter: blur(22px);
     animation: pulseGlow 2.6s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
   html[data-theme="comic"] .logo-glow {
     background: radial-gradient(circle, rgba(255,140,0,.5), transparent 70%);
   }
 
   .logo {
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
     font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
     font-size: clamp(60px, 20vw, 96px);
-    letter-spacing: 2px;
-    margin: 0;
-    line-height: 1;
+    letter-spacing: 2px; margin: 0; line-height: 1;
     transform: skewX(-8deg);
     color: #ff9a1f;
     text-shadow:
-      0 0 6px #ffb340,
-      0 0 14px #ff8a00,
-      0 0 28px #ff4500,
-      2px 2px 0 #4a1a00,
-      4px 4px 0 #2a0f00,
-      6px 6px 0 #120300,
-      8px 8px 0 #000;
+      0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 28px #ff4500,
+      2px 2px 0 #4a1a00, 4px 4px 0 #2a0f00, 6px 6px 0 #120300, 8px 8px 0 #000;
     filter: drop-shadow(0 0 16px rgba(255,140,0,.9));
     animation: flicker 4.5s infinite;
   }
 
   .logo::after {
-    content: "SMXL";
-    position: absolute;
-    inset: 0;
-    font-family: inherit;
-    font-size: inherit;
-    letter-spacing: inherit;
-    color: #ffd580;
-    transform: translate(1.5px, -1.5px);
-    mix-blend-mode: screen;
-    opacity: .55;
-    animation: glitch 3.2s infinite;
-    pointer-events: none;
+    content: "SMXL"; position: absolute; inset: 0;
+    font-family: inherit; font-size: inherit; letter-spacing: inherit;
+    color: #ffd580; transform: translate(1.5px, -1.5px);
+    mix-blend-mode: screen; opacity: .55;
+    animation: glitch 3.2s infinite; pointer-events: none;
     text-shadow: 0 0 12px #ffcc66;
   }
 
@@ -182,106 +143,50 @@
   }
 
   .tagline {
-    text-align: center;
-    color: var(--muted);
-    font-family: "Orbitron", sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    margin: 0;
+    text-align: center; color: var(--muted);
+    font-family: "Orbitron", sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 5px;
+    text-transform: uppercase; margin: 0;
     text-shadow: 0 0 8px rgba(255,138,0,.6);
   }
 
-  /* THEME SWITCH */
-  .theme-switch {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px;
-    background: var(--panel-2);
-    border: 2.5px solid var(--line);
-    border-radius: 999px;
-    box-shadow: 0 4px 0 #000, 0 0 18px rgba(255,138,0,.3);
-  }
-
-  .theme-switch button {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 7px 14px;
-    border: 2px solid var(--line);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--ink);
-    cursor: pointer;
-    transition: transform .15s, background .25s, color .25s, box-shadow .25s;
-  }
-
-  .theme-switch button.active {
-    background: linear-gradient(180deg, #ffb340, #ff8a00);
-    color: #0b0b0b;
-    box-shadow: 0 0 14px rgba(255,160,0,.9), 0 0 26px rgba(255,90,0,.6);
-    transform: scale(1.05);
-  }
-  .theme-switch button:active { transform: scale(.94); }
-
-  /* BUTTONS */
+  /* ACTIONS */
   .actions {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    width: 100%; display: flex; flex-direction: column; gap: 14px;
   }
 
   .btn {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; width: 100%; padding: 16px 20px;
     font-family: "Orbitron", sans-serif;
-    font-weight: 900;
-    font-size: 17px;
-    letter-spacing: 4px;
-    text-decoration: none;
-    color: #0b0b0b;
+    font-weight: 900; font-size: 17px; letter-spacing: 4px;
+    text-decoration: none; color: #0b0b0b;
     background: linear-gradient(180deg, #ffb340, #ff8a00);
-    border: 3px solid var(--line);
-    border-radius: 12px;
+    border: 3px solid var(--line); border-radius: 12px;
     box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,90,0,.4), 0 0 24px rgba(255,138,0,.5);
-    cursor: pointer;
-    user-select: none;
+    cursor: pointer; user-select: none;
     transition: transform .12s ease, box-shadow .12s ease, background .2s ease;
     overflow: hidden;
   }
 
   html[data-theme="comic"] .btn {
-    background: #fff;
-    color: #000;
-    box-shadow: 0 6px 0 #000;
+    background: #fff; color: #000; box-shadow: 0 6px 0 #000;
   }
 
-  .btn.store {
+  .btn.dash {
     background: linear-gradient(180deg, #ff4500, #7a1200);
     color: #fff;
   }
-  html[data-theme="comic"] .btn.store {
-    background: #000;
-    color: #fff;
+  html[data-theme="comic"] .btn.dash {
+    background: #000; color: #fff;
   }
 
   .btn::before {
-    content: "";
-    position: absolute;
-    top: 0; left: -60%;
-    width: 40%; height: 100%;
+    content: ""; position: absolute;
+    top: 0; left: -60%; width: 40%; height: 100%;
     background: linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
-    transform: skewX(-20deg);
-    transition: left .5s ease;
+    transform: skewX(-20deg); transition: left .5s ease;
   }
 
   .btn:hover::before { left: 130%; }
@@ -293,31 +198,21 @@
 
   .btn .mark {
     font-family: "Orbitron", sans-serif;
-    font-weight: 900;
-    font-size: 15px;
-    opacity: .85;
+    font-weight: 900; font-size: 15px; opacity: .85;
   }
 
-  /* FOOTER — warna abu, selalu terlihat */
   footer {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-    padding-top: 10px;
-    text-align: center;
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px; margin: 0 auto;
+    padding-top: 10px; text-align: center;
     color: var(--footer-gray);
     font-family: "Rajdhani", sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 2px;
+    font-weight: 600; font-size: 12px; letter-spacing: 2px;
     border-top: 1px dashed rgba(150,150,150,.35);
     flex-shrink: 0;
   }
   footer b { color: var(--footer-gray); font-weight: 700; }
 
-  /* KEYFRAMES */
   @keyframes pulseGlow {
     0%, 100% { opacity: .85; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.1); }
@@ -343,7 +238,6 @@
     100% { transform: translateY(-110vh) scale(.4); opacity: 0; }
   }
 
-  /* Layar pendek: kecilkan sedikit */
   @media (max-height: 700px) {
     .logo { font-size: clamp(52px, 18vw, 80px); }
     .wrap { gap: 12px; }
@@ -354,7 +248,6 @@
   @media (max-width: 360px) {
     .logo { font-size: 60px; }
     .btn { font-size: 14px; padding: 13px; letter-spacing: 3px; }
-    .theme-switch button { font-size: 10px; padding: 6px 11px; }
   }
 </style>
 </head>
@@ -372,18 +265,13 @@
 
     <p class="tagline">Comic &middot; Dark &middot; Horror</p>
 
-    <div class="theme-switch" role="group" aria-label="Pilih Tema">
-      <button id="btnComic" type="button">KOMIK</button>
-      <button id="btnDark" class="active" type="button">DARK</button>
-    </div>
-
     <div class="actions">
       <a href="login.html" class="btn" id="btnLogin">
         <span class="mark">[+]</span> LOGIN
       </a>
-      <button class="btn store" id="btnStore" type="button">
-        <span class="mark">[&gt;]</span> STORE
-      </button>
+      <a href="dashboard.html" class="btn dash" id="btnDash">
+        <span class="mark">[&gt;]</span> DASHBOARD
+      </a>
     </div>
   </main>
 
@@ -393,24 +281,13 @@
 
 <script>
   const html = document.documentElement;
-  const btnComic = document.getElementById('btnComic');
-  const btnDark  = document.getElementById('btnDark');
 
-  function setTheme(theme) {
-    html.setAttribute('data-theme', theme);
-    btnComic.classList.toggle('active', theme === 'comic');
-    btnDark.classList.toggle('active', theme === 'dark');
-    try { localStorage.setItem('smxl-theme', theme); } catch(e) {}
-  }
-
+  /* Muat tema dari localStorage (dipakai bersama dgn dashboard.html) */
   let saved = 'dark';
   try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
-  setTheme(saved);
+  html.setAttribute('data-theme', saved);
 
-  btnComic.addEventListener('click', () => setTheme('comic'));
-  btnDark.addEventListener('click', () => setTheme('dark'));
-
-  /* EMBER PARTICLES */
+  /* EMBER */
   const emberBox = document.getElementById('embers');
   for (let i = 0; i < 18; i++) {
     const e = document.createElement('span');
@@ -425,13 +302,6 @@
     emberBox.appendChild(e);
   }
 
-  const btnStore = document.getElementById('btnStore');
-  btnStore.addEventListener('click', () => {
-    btnStore.style.transform = 'scale(.95)';
-    setTimeout(() => { btnStore.style.transform = ''; }, 120);
-    alert('STORE segera hadir! (demo)');
-  });
-
   const btnLogin = document.getElementById('btnLogin');
   btnLogin.addEventListener('touchstart', () => {
     btnLogin.style.transform = 'translateY(2px)';
@@ -441,4 +311,4 @@
   });
 </script>
 </body>
-  </html>
+</html>
