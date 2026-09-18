@@ -25,7 +25,6 @@
     --shadow: 0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
     --footer-gray: #6b7280;
   }
-
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; height: 100%; }
 
@@ -43,7 +42,6 @@
     position: relative; overflow: hidden;
     transition: background .5s ease, color .4s ease;
   }
-
   body::before {
     content: ""; position: fixed; inset: 0;
     background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
@@ -53,14 +51,12 @@
     background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
     background-size: 10px 10px;
   }
-
   .vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,.85) 100%);
     mix-blend-mode: multiply; animation: breathe 6s ease-in-out infinite;
   }
   html[data-theme="comic"] .vignette { opacity: 0; }
-
   .embers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .ember {
     position: absolute; width: 4px; height: 4px;
@@ -69,7 +65,6 @@
     animation: rise linear infinite;
   }
   html[data-theme="comic"] .embers { display: none; }
-
   .speed-lines {
     position: fixed; top: -40px; right: -40px;
     width: 240px; height: 240px;
@@ -89,7 +84,6 @@
     display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 16px; padding: 4px 0;
   }
-
   .back {
     position: absolute; top: 0; left: 0;
     font-family: "Orbitron", sans-serif;
@@ -134,7 +128,6 @@
     z-index: -1; border-radius: 30px;
   }
   html[data-theme="comic"] .panel::before { display: none; }
-
   .panel-label {
     position: absolute; top: -14px; left: 18px;
     background: linear-gradient(180deg, #ffb340, #ff8a00);
@@ -146,7 +139,6 @@
     box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,138,0,.8);
     z-index: 2; white-space: nowrap;
   }
-
   .title {
     font-family: "Bebas Neue", "Impact", sans-serif;
     font-size: 44px; letter-spacing: 6px;
@@ -218,6 +210,27 @@
     box-shadow: 0 2px 0 #000, 0 4px 8px rgba(0,0,0,.5);
   }
   .btn-login:disabled { opacity: .6; cursor: wait; }
+
+  /* Tombol DAFTAR (secondary style) */
+  .btn-daftar {
+    display: block; width: 100%;
+    margin-top: 10px; padding: 12px 18px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 14px; letter-spacing: 5px;
+    color: #ff8a00; text-decoration: none; text-align: center;
+    background: transparent;
+    border: 2.5px solid #ff8a00;
+    border-radius: 12px;
+    box-shadow: 0 0 16px rgba(255,138,0,.35), inset 0 0 12px rgba(255,138,0,.08);
+    cursor: pointer;
+    transition: transform .12s, background .25s, color .25s, box-shadow .25s;
+    position: relative; overflow: hidden;
+  }
+  .btn-daftar:hover {
+    background: #ff8a00; color: #0b0b0b;
+    box-shadow: 0 0 26px rgba(255,138,0,.8), inset 0 0 20px rgba(255,180,0,.4);
+  }
+  .btn-daftar:active { transform: scale(.96); }
 
   .message {
     margin-top: 10px; min-height: 18px;
@@ -311,15 +324,12 @@
 </style>
 </head>
 <body>
-
   <div class="vignette"></div>
   <div class="embers" id="embers"></div>
   <div class="speed-lines"></div>
 
   <main class="wrap">
-
     <a href="index.html" class="back">&lt; KEMBALI</a>
-
     <h1 class="mini-logo">SMXL</h1>
 
     <section class="panel">
@@ -331,13 +341,13 @@
           <label for="username">Username :</label>
           <input type="text" id="username" placeholder="Masukkan username" />
         </div>
-
         <div class="field">
           <label for="password">Password :</label>
           <input type="password" id="password" placeholder="Masukkan password" />
         </div>
-
         <button type="submit" class="btn-login" id="btnSubmit">LOGIN</button>
+
+        <a href="daftar.html" class="btn-daftar">DAFTAR</a>
 
         <div class="message" id="message"></div>
       </form>
@@ -347,100 +357,88 @@
       <button id="btnComic" type="button">KOMIK</button>
       <button id="btnDark" type="button">DARK</button>
     </div>
-
   </main>
 
-  <footer>
-    <b>@created by samil</b>
-  </footer>
+  <footer><b>@created by samil</b></footer>
 
 <script>
-/* =========================================================
-   KONFIGURASI BOT TELEGRAM
-   Ganti BOT_API_URL sesuai alamat bot Termux kamu.
-   Contoh:
-     - Lokal (HP sama):   http://127.0.0.1:8080
-     - Tunnel (cloudflared/ngrok): https://xxxx.trycloudflare.com
-   ========================================================= */
-const BOT_API_URL = "http://127.0.0.1:8080";
+  const BOT_API_URL = "http://127.0.0.1:8080";
 
-/* THEME */
-const html = document.documentElement;
-const btnComic = document.getElementById('btnComic');
-const btnDark  = document.getElementById('btnDark');
+  /* THEME */
+  const html = document.documentElement;
+  const btnComic = document.getElementById('btnComic');
+  const btnDark  = document.getElementById('btnDark');
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    btnComic.classList.toggle('active', theme === 'comic');
+    btnDark.classList.toggle('active', theme === 'dark');
+    try { localStorage.setItem('smxl-theme', theme); } catch(e) {}
+  }
+  let saved = 'dark';
+  try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
+  setTheme(saved);
+  btnComic.addEventListener('click', () => setTheme('comic'));
+  btnDark.addEventListener('click', () => setTheme('dark'));
 
-function setTheme(theme) {
-  html.setAttribute('data-theme', theme);
-  btnComic.classList.toggle('active', theme === 'comic');
-  btnDark.classList.toggle('active', theme === 'dark');
-  try { localStorage.setItem('smxl-theme', theme); } catch(e) {}
-}
-let saved = 'dark';
-try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
-setTheme(saved);
-btnComic.addEventListener('click', () => setTheme('comic'));
-btnDark.addEventListener('click', () => setTheme('dark'));
-
-/* EMBER */
-const emberBox = document.getElementById('embers');
-for (let i = 0; i < 18; i++) {
-  const e = document.createElement('span');
-  e.className = 'ember';
-  e.style.left = Math.random() * 100 + 'vw';
-  e.style.bottom = '-10px';
-  const size = 2 + Math.random() * 3;
-  e.style.width = size + 'px';
-  e.style.height = size + 'px';
-  e.style.animationDuration = (6 + Math.random() * 8) + 's';
-  e.style.animationDelay = (Math.random() * 8) + 's';
-  emberBox.appendChild(e);
-}
-
-/* LOGIN VIA BOT TELEGRAM */
-const form = document.getElementById('loginForm');
-const msg = document.getElementById('message');
-const btnSubmit = document.getElementById('btnSubmit');
-
-function showMessage(text, type) {
-  msg.textContent = text;
-  msg.className = 'message show ' + type;
-}
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const user = document.getElementById('username').value.trim();
-  const pass = document.getElementById('password').value.trim();
-
-  if (!user || !pass) {
-    showMessage('USERNAME & PASSWORD WAJIB DIISI', 'err');
-    return;
+  /* EMBER */
+  const emberBox = document.getElementById('embers');
+  for (let i = 0; i < 18; i++) {
+    const e = document.createElement('span');
+    e.className = 'ember';
+    e.style.left = Math.random() * 100 + 'vw';
+    e.style.bottom = '-10px';
+    const size = 2 + Math.random() * 3;
+    e.style.width = size + 'px';
+    e.style.height = size + 'px';
+    e.style.animationDuration = (6 + Math.random() * 8) + 's';
+    e.style.animationDelay = (Math.random() * 8) + 's';
+    emberBox.appendChild(e);
   }
 
-  btnSubmit.disabled = true;
-  showMessage('MENGHUBUNGI SERVER...', 'ok');
+  /* LOGIN */
+  const form = document.getElementById('loginForm');
+  const msg = document.getElementById('message');
+  const btnSubmit = document.getElementById('btnSubmit');
+  function showMessage(text, type) {
+    msg.textContent = text;
+    msg.className = 'message show ' + type;
+  }
 
-  try {
-    const res = await fetch(BOT_API_URL + '/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user, password: pass })
-    });
-
-    const data = await res.json();
-
-    if (data.status === 'ok') {
-      showMessage('LOGIN BERHASIL (DEMO)', 'ok');
-      setTimeout(() => { document.getElementById('password').value = ''; }, 600);
-    } else {
-      showMessage('USERNAME / PASSWORD SALAH', 'err');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    if (!user || !pass) {
+      showMessage('USERNAME & PASSWORD WAJIB DIISI', 'err');
+      return;
     }
-  } catch (err) {
-    showMessage('GAGAL KONEK KE SERVER', 'err');
-    console.error(err);
-  } finally {
-    btnSubmit.disabled = false;
-  }
-});
+
+    btnSubmit.disabled = true;
+    showMessage('MEMERIKSA...', 'ok');
+
+    try {
+      const res = await fetch(BOT_API_URL + '/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+      });
+      const data = await res.json();
+
+      if (data.status === 'ok') {
+        showMessage('LOGIN BERHASIL (DEMO)', 'ok');
+        setTimeout(() => { document.getElementById('password').value = ''; }, 600);
+      } else if (data.status === 'pending') {
+        showMessage('AKUN BELUM DI-ACC OWNER', 'err');
+      } else {
+        showMessage('USERNAME / PASSWORD SALAH', 'err');
+      }
+    } catch (err) {
+      showMessage('GAGAL KONEK KE SERVER', 'err');
+      console.error(err);
+    } finally {
+      btnSubmit.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
