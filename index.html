@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>SMXL — Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +19,14 @@
     --accent-3: #ffb340;
     --line: #e9edf5;
     --shadow: 0 10px 0 #000, 0 14px 24px rgba(0,0,0,.6);
+    --footer-gray: #9ca3af;
   }
 
   html[data-theme="dark"] {
     --bg: #050506;
     --ink: #f5f0ea;
     --muted: #8a7d78;
+    --footer-gray: #9ca3af;
   }
 
   html[data-theme="comic"] {
@@ -35,6 +37,7 @@
     --muted: #4a4a4a;
     --line: #0b0b0b;
     --shadow: 0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
+    --footer-gray: #6b7280;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -42,7 +45,7 @@
   html, body {
     margin: 0;
     padding: 0;
-    min-height: 100%;
+    height: 100%;
   }
 
   body {
@@ -55,16 +58,13 @@
     color: var(--ink);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 100vh;
-    padding: 24px 18px 18px;
+    min-height: 100dvh;
+    padding: 20px 18px 14px;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
     transition: background .5s ease, color .4s ease;
   }
 
-  /* Halftone dots */
   body::before {
     content: "";
     position: fixed;
@@ -79,7 +79,6 @@
     background-size: 10px 10px;
   }
 
-  /* Vignette seram */
   .vignette {
     position: fixed;
     inset: 0;
@@ -91,7 +90,6 @@
   }
   html[data-theme="comic"] .vignette { opacity: 0; }
 
-  /* Ember particles */
   .embers { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .ember {
     position: absolute;
@@ -103,29 +101,32 @@
   }
   html[data-theme="comic"] .embers { display: none; }
 
+  /* ===== LAYOUT UTAMA: full height, tanpa scroll ===== */
   .wrap {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 420px;
+    margin: 0 auto;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
     justify-content: center;
-    gap: 26px;
+    gap: 18px;
+    padding: 6px 0;
   }
 
-  /* ===== LOGO SMXL ORANYE CERAH ===== */
+  /* LOGO */
   .logo-stage {
     position: relative;
     display: inline-block;
-    padding: 14px 6px;
+    padding: 6px 4px;
   }
 
   .logo-glow {
     position: absolute;
-    inset: -50px;
+    inset: -40px;
     background: radial-gradient(circle, rgba(255,160,0,.75), rgba(255,90,0,.35) 40%, transparent 72%);
     filter: blur(22px);
     animation: pulseGlow 2.6s ease-in-out infinite;
@@ -140,7 +141,7 @@
     position: relative;
     z-index: 1;
     font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
-    font-size: clamp(80px, 26vw, 130px);
+    font-size: clamp(60px, 20vw, 96px);
     letter-spacing: 2px;
     margin: 0;
     line-height: 1;
@@ -150,7 +151,6 @@
       0 0 6px #ffb340,
       0 0 14px #ff8a00,
       0 0 28px #ff4500,
-      0 0 48px #ff2400,
       2px 2px 0 #4a1a00,
       4px 4px 0 #2a0f00,
       6px 6px 0 #120300,
@@ -177,9 +177,7 @@
 
   html[data-theme="comic"] .logo {
     color: #ff8a00;
-    text-shadow:
-      3px 3px 0 #000,
-      5px 5px 0 #000;
+    text-shadow: 3px 3px 0 #000, 5px 5px 0 #000;
     filter: none;
   }
 
@@ -188,19 +186,19 @@
     color: var(--muted);
     font-family: "Orbitron", sans-serif;
     font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 6px;
+    font-size: 11px;
+    letter-spacing: 5px;
     text-transform: uppercase;
     margin: 0;
     text-shadow: 0 0 8px rgba(255,138,0,.6);
   }
 
-  /* ===== THEME SWITCH ===== */
+  /* THEME SWITCH */
   .theme-switch {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px;
+    gap: 6px;
+    padding: 5px;
     background: var(--panel-2);
     border: 2.5px solid var(--line);
     border-radius: 999px;
@@ -210,9 +208,9 @@
   .theme-switch button {
     font-family: "Orbitron", sans-serif;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 2px;
-    padding: 8px 16px;
+    padding: 7px 14px;
     border: 2px solid var(--line);
     border-radius: 999px;
     background: transparent;
@@ -229,12 +227,12 @@
   }
   .theme-switch button:active { transform: scale(.94); }
 
-  /* ===== BUTTONS ===== */
+  /* BUTTONS */
   .actions {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
 
   .btn {
@@ -244,10 +242,10 @@
     justify-content: center;
     gap: 12px;
     width: 100%;
-    padding: 18px 20px;
+    padding: 16px 20px;
     font-family: "Orbitron", sans-serif;
     font-weight: 900;
-    font-size: 18px;
+    font-size: 17px;
     letter-spacing: 4px;
     text-decoration: none;
     color: #0b0b0b;
@@ -296,31 +294,30 @@
   .btn .mark {
     font-family: "Orbitron", sans-serif;
     font-weight: 900;
-    font-size: 16px;
+    font-size: 15px;
     opacity: .85;
   }
 
-  /* ===== FOOTER ===== */
+  /* FOOTER — warna abu, selalu terlihat */
   footer {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 420px;
+    margin: 0 auto;
+    padding-top: 10px;
     text-align: center;
-    color: var(--muted);
+    color: var(--footer-gray);
     font-family: "Rajdhani", sans-serif;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 2px;
-    margin-top: 28px;
-    padding-top: 14px;
-    border-top: 1px dashed rgba(255,255,255,.12);
+    border-top: 1px dashed rgba(150,150,150,.35);
+    flex-shrink: 0;
   }
-  footer b { color: #ff8a00; text-shadow: 0 0 10px rgba(255,138,0,.9); }
-  html[data-theme="comic"] footer { border-top-color: rgba(0,0,0,.3); }
-  html[data-theme="comic"] footer b { color: #ff4500; text-shadow: none; }
+  footer b { color: var(--footer-gray); font-weight: 700; }
 
-  /* ===== KEYFRAMES ===== */
+  /* KEYFRAMES */
   @keyframes pulseGlow {
     0%, 100% { opacity: .85; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.1); }
@@ -346,10 +343,18 @@
     100% { transform: translateY(-110vh) scale(.4); opacity: 0; }
   }
 
+  /* Layar pendek: kecilkan sedikit */
+  @media (max-height: 700px) {
+    .logo { font-size: clamp(52px, 18vw, 80px); }
+    .wrap { gap: 12px; }
+    .btn { padding: 14px 18px; font-size: 15px; }
+    footer { font-size: 11px; padding-top: 8px; }
+  }
+
   @media (max-width: 360px) {
-    .logo { font-size: 76px; }
-    .btn { font-size: 16px; padding: 15px; letter-spacing: 3px; }
-    .theme-switch button { font-size: 10px; padding: 7px 12px; }
+    .logo { font-size: 60px; }
+    .btn { font-size: 14px; padding: 13px; letter-spacing: 3px; }
+    .theme-switch button { font-size: 10px; padding: 6px 11px; }
   }
 </style>
 </head>
@@ -360,7 +365,6 @@
 
   <main class="wrap">
 
-    <!-- LOGO -->
     <div class="logo-stage">
       <span class="logo-glow"></span>
       <h1 class="logo">SMXL</h1>
@@ -368,13 +372,11 @@
 
     <p class="tagline">Comic &middot; Dark &middot; Horror</p>
 
-    <!-- THEME SWITCH -->
     <div class="theme-switch" role="group" aria-label="Pilih Tema">
       <button id="btnComic" type="button">KOMIK</button>
       <button id="btnDark" class="active" type="button">DARK</button>
     </div>
 
-    <!-- ACTIONS -->
     <div class="actions">
       <a href="login.html" class="btn" id="btnLogin">
         <span class="mark">[+]</span> LOGIN
@@ -390,7 +392,6 @@
   </footer>
 
 <script>
-  /* THEME TOGGLE */
   const html = document.documentElement;
   const btnComic = document.getElementById('btnComic');
   const btnDark  = document.getElementById('btnDark');
@@ -411,12 +412,12 @@
 
   /* EMBER PARTICLES */
   const emberBox = document.getElementById('embers');
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < 18; i++) {
     const e = document.createElement('span');
     e.className = 'ember';
     e.style.left = Math.random() * 100 + 'vw';
     e.style.bottom = '-10px';
-    const size = 2 + Math.random() * 4;
+    const size = 2 + Math.random() * 3;
     e.style.width = size + 'px';
     e.style.height = size + 'px';
     e.style.animationDuration = (6 + Math.random() * 8) + 's';
@@ -424,7 +425,6 @@
     emberBox.appendChild(e);
   }
 
-  /* KLIK */
   const btnStore = document.getElementById('btnStore');
   btnStore.addEventListener('click', () => {
     btnStore.style.transform = 'scale(.95)';
@@ -441,4 +441,4 @@
   });
 </script>
 </body>
-        </html>
+  </html>
