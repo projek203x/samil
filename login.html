@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SMXL — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #050506;
@@ -11,9 +14,9 @@
     --panel-2: #1c1412;
     --ink: #f5f0ea;
     --muted: #8a7d78;
-    --accent: #ff6a00;
-    --accent-2: #ff2400;
-    --accent-3: #ffcc00;
+    --accent: #ff8a00;
+    --accent-2: #ff4500;
+    --accent-3: #ffb340;
     --line: #e9edf5;
     --ok: #34d399;
     --shadow: 0 10px 0 #000, 0 18px 30px rgba(0,0,0,.6);
@@ -40,10 +43,11 @@
   html, body { margin: 0; padding: 0; min-height: 100%; }
 
   body {
-    font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
+    font-weight: 600;
     background:
-      radial-gradient(circle at 15% 10%, rgba(255,106,0,.16), transparent 45%),
-      radial-gradient(circle at 90% 90%, rgba(255,36,0,.2), transparent 45%),
+      radial-gradient(circle at 15% 10%, rgba(255,138,0,.18), transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(255,69,0,.22), transparent 45%),
       var(--bg);
     color: var(--ink);
     min-height: 100vh;
@@ -66,7 +70,6 @@
     pointer-events: none;
     z-index: 0;
   }
-
   html[data-theme="comic"] body::before {
     background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
     background-size: 10px 10px;
@@ -87,21 +90,20 @@
   .ember {
     position: absolute;
     width: 4px; height: 4px;
-    background: radial-gradient(circle, #ffcc00, #ff2400 60%, transparent 70%);
+    background: radial-gradient(circle, #ffcc66, #ff4500 60%, transparent 70%);
     border-radius: 50%;
     opacity: 0;
     animation: rise linear infinite;
   }
   html[data-theme="comic"] .embers { display: none; }
 
-  /* Speed lines */
   .speed-lines {
     position: fixed;
     top: -40px; right: -40px;
     width: 240px; height: 240px;
     background: repeating-linear-gradient(
       135deg,
-      rgba(255,106,0,.22) 0 4px,
+      rgba(255,138,0,.24) 0 4px,
       transparent 4px 14px
     );
     transform: rotate(15deg);
@@ -127,90 +129,92 @@
     gap: 20px;
   }
 
-  /* Logo kecil di atas panel */
+  /* Mini logo */
   .mini-logo {
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 40px;
-    letter-spacing: -2px;
-    font-style: italic;
+    font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
     transform: skewX(-8deg);
     margin: 0;
-    background: linear-gradient(180deg, #ffcf8a, #ff8a1f 40%, #ff2400 75%, #7a1200);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    line-height: 1;
+    color: #ff9a1f;
     text-shadow:
-      2px 2px 0 #3a0a00,
+      0 0 6px #ffb340,
+      0 0 14px #ff8a00,
+      0 0 26px #ff4500,
+      2px 2px 0 #4a1a00,
       4px 4px 0 #120300,
       5px 5px 0 #000;
-    filter: drop-shadow(0 0 12px rgba(255,90,0,.8));
+    filter: drop-shadow(0 0 14px rgba(255,140,0,.85));
     animation: flicker 4s infinite;
   }
+  html[data-theme="comic"] .mini-logo {
+    color: #ff8a00;
+    text-shadow: 3px 3px 0 #000;
+    filter: none;
+  }
 
-  /* ========== PANEL LOGIN ========== */
+  /* PANEL LOGIN */
   .panel {
     position: relative;
     width: 100%;
     background: var(--panel);
     border: 3px solid var(--line);
     border-radius: 16px;
-    box-shadow: var(--shadow), 0 0 30px rgba(255,60,0,.35);
+    box-shadow: var(--shadow), 0 0 30px rgba(255,90,0,.4);
     padding: 30px 20px 24px;
     animation: slideUp .55s cubic-bezier(.2,.9,.3,1.2) both;
     overflow: hidden;
   }
 
-  /* Efek asap/aura gelap di belakang panel */
   .panel::before {
     content: "";
     position: absolute;
     inset: -30px;
-    background: radial-gradient(circle at 50% 0%, rgba(255,60,0,.25), transparent 60%);
+    background: radial-gradient(circle at 50% 0%, rgba(255,90,0,.28), transparent 60%);
     pointer-events: none;
     animation: pulseGlow 4s ease-in-out infinite;
     z-index: -1;
   }
-
   html[data-theme="comic"] .panel::before { display: none; }
 
   .panel-label {
     position: absolute;
     top: -16px;
     left: 18px;
-    background: linear-gradient(180deg, var(--accent-3), var(--accent));
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
     color: #0b0b0b;
-    font-family: "Impact", "Arial Black", sans-serif;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900;
     letter-spacing: 2px;
-    font-size: 13px;
+    font-size: 11px;
     padding: 6px 12px;
     border: 3px solid #000;
     border-radius: 8px;
-    box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,106,0,.7);
+    box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,138,0,.8);
   }
 
   .title {
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 44px;
-    letter-spacing: 5px;
+    font-family: "Bebas Neue", "Impact", sans-serif;
+    font-size: 54px;
+    letter-spacing: 6px;
     margin: 6px 0 22px;
+    line-height: 1;
     text-align: center;
-    background: linear-gradient(180deg, #ffcf8a, #ff8a1f 40%, #ff2400 75%, #7a1200);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #ff9a1f;
     text-shadow:
-      2px 2px 0 #3a0a00,
+      0 0 6px #ffb340,
+      0 0 14px #ff8a00,
+      0 0 26px #ff4500,
+      2px 2px 0 #4a1a00,
       4px 4px 0 #120300,
       6px 6px 0 #000;
-    filter: drop-shadow(0 0 10px rgba(255,90,0,.7));
+    filter: drop-shadow(0 0 10px rgba(255,140,0,.8));
     animation: flicker 5s infinite;
   }
-
   html[data-theme="comic"] .title {
-    background: none;
-    color: #ff2400;
-    -webkit-text-fill-color: #ff2400;
-    text-shadow: 3px 3px 0 #000;
+    color: #ff8a00;
+    text-shadow: 3px 3px 0 #000, 5px 5px 0 #000;
     filter: none;
   }
 
@@ -218,19 +222,22 @@
 
   .field label {
     display: block;
-    font-size: 13px;
-    letter-spacing: 2px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 8px;
-    font-weight: bold;
   }
 
   .field input {
     width: 100%;
     padding: 14px 15px;
     font-size: 16px;
-    font-family: inherit;
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
     color: var(--ink);
     background: var(--panel-2);
     border: 2.5px solid var(--line);
@@ -244,8 +251,8 @@
   html[data-theme="comic"] .field input::placeholder { color: #999; }
 
   .field input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 4px 0 #000, 0 0 0 4px rgba(255,106,0,.25), 0 0 20px rgba(255,106,0,.4);
+    border-color: #ff8a00;
+    box-shadow: 0 4px 0 #000, 0 0 0 4px rgba(255,138,0,.28), 0 0 22px rgba(255,138,0,.5);
     transform: translateY(-1px);
   }
 
@@ -253,20 +260,20 @@
     width: 100%;
     margin-top: 10px;
     padding: 17px 20px;
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 22px;
-    letter-spacing: 5px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 6px;
     color: #0b0b0b;
-    background: linear-gradient(180deg, #ffcc00, #ff6a00);
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
     border: 3px solid var(--line);
     border-radius: 12px;
-    box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,60,0,.4), 0 0 26px rgba(255,106,0,.55);
+    box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,90,0,.45), 0 0 26px rgba(255,138,0,.6);
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: transform .12s, box-shadow .12s, background .2s;
   }
-
   html[data-theme="comic"] .btn-login {
     background: #fff;
     color: #000;
@@ -278,7 +285,7 @@
     position: absolute;
     top: 0; left: -60%;
     width: 40%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,.7), transparent);
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
     transform: skewX(-20deg);
     transition: left .5s ease;
   }
@@ -294,16 +301,17 @@
     margin-top: 14px;
     min-height: 24px;
     text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
     opacity: 0;
     transform: translateY(-6px);
     transition: opacity .35s ease, transform .35s ease;
   }
   .message.show { opacity: 1; transform: translateY(0); }
-  .message.ok { color: var(--ok); text-shadow: 0 0 10px rgba(52,211,153,.6); }
-  .message.err { color: var(--accent-2); text-shadow: 0 0 10px rgba(255,36,0,.6); }
+  .message.ok { color: var(--ok); text-shadow: 0 0 10px rgba(52,211,153,.7); }
+  .message.err { color: #ff4500; text-shadow: 0 0 10px rgba(255,69,0,.8); }
 
   /* Theme switch */
   .theme-switch {
@@ -314,11 +322,12 @@
     background: var(--panel-2);
     border: 2.5px solid var(--line);
     border-radius: 999px;
-    box-shadow: 0 4px 0 #000, 0 0 18px rgba(255,90,0,.25);
+    box-shadow: 0 4px 0 #000, 0 0 18px rgba(255,138,0,.3);
   }
   .theme-switch button {
-    font-family: "Impact", "Arial Black", sans-serif;
-    font-size: 12px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    font-size: 11px;
     letter-spacing: 2px;
     padding: 7px 14px;
     border: 2px solid var(--line);
@@ -329,9 +338,9 @@
     transition: transform .15s, background .25s, color .25s, box-shadow .25s;
   }
   .theme-switch button.active {
-    background: linear-gradient(180deg, var(--accent-3), var(--accent));
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
     color: #0b0b0b;
-    box-shadow: 0 0 14px rgba(255,106,0,.8), 0 0 26px rgba(255,36,0,.5);
+    box-shadow: 0 0 14px rgba(255,160,0,.9), 0 0 26px rgba(255,90,0,.6);
     transform: scale(1.05);
   }
   .theme-switch button:active { transform: scale(.94); }
@@ -343,16 +352,19 @@
     max-width: 420px;
     text-align: center;
     color: var(--muted);
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
     font-size: 13px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin-top: 26px;
     padding-top: 14px;
     border-top: 1px dashed rgba(255,255,255,.12);
   }
-  footer b { color: var(--accent); text-shadow: 0 0 8px rgba(255,106,0,.8); }
+  footer b { color: #ff8a00; text-shadow: 0 0 10px rgba(255,138,0,.9); }
   html[data-theme="comic"] footer { border-top-color: rgba(0,0,0,.3); }
-  html[data-theme="comic"] footer b { color: #ff2400; text-shadow: none; }
+  html[data-theme="comic"] footer b { color: #ff4500; text-shadow: none; }
 
+  /* KEYFRAMES */
   @keyframes slideUp {
     0% { opacity: 0; transform: translateY(28px) rotate(-1deg); }
     100% { opacity: 1; transform: translateY(0) rotate(0); }
@@ -380,8 +392,8 @@
   }
 
   @media (max-width: 360px) {
-    .title { font-size: 34px; }
-    .btn-login { font-size: 18px; padding: 15px; }
+    .title { font-size: 42px; }
+    .btn-login { font-size: 16px; padding: 15px; letter-spacing: 4px; }
     .panel { padding: 24px 15px 20px; }
     .theme-switch button { font-size: 10px; padding: 6px 10px; }
   }
@@ -418,7 +430,6 @@
       </form>
     </section>
 
-    <!-- Pilihan tema -->
     <div class="theme-switch" role="group" aria-label="Pilih Tema">
       <button id="btnComic" type="button">KOMIK</button>
       <button id="btnDark" class="active" type="button">DARK</button>
@@ -431,7 +442,7 @@
   </footer>
 
 <script>
-  /* ====== TEMA TOGGLE ====== */
+  /* THEME TOGGLE */
   const html = document.documentElement;
   const btnComic = document.getElementById('btnComic');
   const btnDark  = document.getElementById('btnDark');
@@ -450,7 +461,7 @@
   btnComic.addEventListener('click', () => setTheme('comic'));
   btnDark.addEventListener('click', () => setTheme('dark'));
 
-  /* ====== EMBER PARTICLES ====== */
+  /* EMBER PARTICLES */
   const emberBox = document.getElementById('embers');
   for (let i = 0; i < 22; i++) {
     const e = document.createElement('span');
@@ -465,7 +476,7 @@
     emberBox.appendChild(e);
   }
 
-  /* ====== FORM LOGIN ====== */
+  /* FORM LOGIN */
   const form = document.getElementById('loginForm');
   const msg = document.getElementById('message');
 
@@ -480,16 +491,16 @@
     const pass = document.getElementById('password').value.trim();
 
     if (!user || !pass) {
-      showMessage('Username & Password wajib diisi!', 'err');
+      showMessage('USERNAME & PASSWORD WAJIB DIISI', 'err');
       return;
     }
 
     // Simulasi front-end saja — bukan sistem keamanan nyata
-    showMessage('Login berhasil (demo)', 'ok');
+    showMessage('LOGIN BERHASIL (DEMO)', 'ok');
     setTimeout(() => {
       document.getElementById('password').value = '';
     }, 600);
   });
 </script>
 </body>
-        </html>
+</html>
