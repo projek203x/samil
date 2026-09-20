@@ -10,515 +10,848 @@
 <style>
   :root {
     --bg: #050506;
-    --panel: #120d0b;
-    --panel-2: #1c1412;
+    --panel: #16181d;
+    --panel-2: #1e2128;
+    --card: #232730;
     --ink: #f5f0ea;
-    --muted: #8a7d78;
-    --line: #e9edf5;
-    --ok: #34d399;
-    --warn: #ffb340;
-    --dev: #ff4500;
-    --shadow: 0 8px 0 #000, 0 14px 26px rgba(0,0,0,.6);
+    --muted: #8a8f9c;
+    --line: #2b2f38;
+    --accent: #ff8a00;
+    --accent-2: #ff4500;
+    --gold: #ffcc00;
+    --pink: #ff3b6b;
     --footer-gray: #9ca3af;
+    --shadow-card: 0 4px 0 #000, 0 6px 12px rgba(0,0,0,.4);
   }
   html[data-theme="dark"] {
-    --bg: #050506; --ink: #f5f0ea; --muted: #8a7d78; --footer-gray: #9ca3af;
+    --bg: #050506; --panel: #16181d; --panel-2: #1e2128; --card: #232730;
+    --ink: #f5f0ea; --muted: #8a8f9c; --line: #2b2f38;
   }
   html[data-theme="comic"] {
-    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7;
+    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7; --card: #ffffff;
     --ink: #0b0b0b; --muted: #4a4a4a; --line: #0b0b0b;
-    --shadow: 0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
-    --footer-gray: #6b7280;
+    --shadow-card: 0 4px 0 #000;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; min-height: 100%; }
 
   body {
     font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
     font-weight: 600;
-    background:
-      radial-gradient(circle at 15% 10%, rgba(255,138,0,.18), transparent 45%),
-      radial-gradient(circle at 90% 90%, rgba(255,69,0,.22), transparent 45%),
-      var(--bg);
+    background: var(--bg);
     color: var(--ink);
     display: flex; flex-direction: column;
     min-height: 100dvh;
-    padding: 16px 16px 12px;
+    padding: 0 0 90px 0;
     position: relative;
     overflow-x: hidden;
     transition: background .5s ease, color .4s ease;
   }
   body::before {
     content: ""; position: fixed; inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
     background-size: 14px 14px; pointer-events: none; z-index: 0;
   }
   html[data-theme="comic"] body::before {
-    background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0,0,0,.1) 1px, transparent 1px);
     background-size: 10px 10px;
   }
-  .vignette {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,.85) 100%);
-    mix-blend-mode: multiply; animation: breathe 6s ease-in-out infinite;
-  }
-  html[data-theme="comic"] .vignette { opacity: 0; }
 
-  .speed-lines {
-    position: fixed; top: -40px; right: -40px;
-    width: 240px; height: 240px;
-    background: repeating-linear-gradient(135deg, rgba(255,138,0,.24) 0 4px, transparent 4px 14px);
-    transform: rotate(15deg); pointer-events: none; opacity: .9;
-    mask-image: radial-gradient(circle, #000 30%, transparent 70%);
-    animation: drift 8s ease-in-out infinite alternate;
-  }
-  html[data-theme="comic"] .speed-lines {
-    background: repeating-linear-gradient(135deg, rgba(0,0,0,.3) 0 4px, transparent 4px 14px);
-  }
-
-  .wrap {
-    position: relative; z-index: 1;
-    width: 100%; max-width: 420px; margin: 0 auto;
-    flex: 1;
-    display: flex; flex-direction: column; gap: 14px;
-    padding: 4px 0 8px;
-  }
-
-  /* ==== HEADER ==== */
-  .header {
+  /* ==== TOP BAR ==== */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
     display: flex; align-items: center; justify-content: space-between;
-    gap: 10px;
+    padding: 12px 16px;
+    background: linear-gradient(180deg, rgba(255,59,107,.95), rgba(255,59,107,.85));
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.5);
   }
-  .back {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 700; font-size: 11px; letter-spacing: 2px;
-    color: var(--muted); text-decoration: none;
-    padding: 6px 10px;
-    border: 2px solid var(--muted); border-radius: 8px;
-    transition: color .2s, border-color .2s, transform .12s;
+  html[data-theme="comic"] .topbar {
+    background: #ffffff;
+    border-bottom: 3px solid #000;
+    box-shadow: 0 4px 0 #000;
   }
-  .back:hover { color: #ff8a00; border-color: #ff8a00; }
-  .back:active { transform: scale(.94); }
+  .menu-btn {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,.25);
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    color: #fff; font-size: 18px; font-weight: 900;
+    cursor: pointer;
+    transition: transform .15s, background .2s;
+  }
+  html[data-theme="comic"] .menu-btn {
+    background: #fff; color: #000; border-color: #000;
+  }
+  .menu-btn:active { transform: scale(.9); }
 
-  .mini-logo {
-    font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
-    font-size: 28px; letter-spacing: 2px;
-    transform: skewX(-8deg); margin: 0; line-height: 1;
-    color: #ff9a1f;
+  .brand-title {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: 3px;
+    color: #fff;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    background: rgba(0,0,0,.35);
+    border: 2px solid rgba(255,255,255,.25);
+    border-radius: 999px;
+  }
+  html[data-theme="comic"] .brand-title {
+    background: #f2f2f2; color: #000; border-color: #000;
+  }
+  .brand-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+    animation: blink 1.4s infinite;
+  }
+
+  .avatar-top {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff; color: #ff3b6b;
+    border: 3px solid #000;
+    border-radius: 50%;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255,255,255,.3);
+  }
+
+  /* ==== CONTAINER ==== */
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 440px; margin: 0 auto;
+    padding: 16px 14px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  /* ==== BANNER MANTA'X ==== */
+  .banner {
+    position: relative;
+    background: linear-gradient(135deg, #2a2d35, #1a1c22);
+    border: 3px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-card), 0 0 20px rgba(255,138,0,.15);
+    overflow: hidden;
+  }
+  html[data-theme="comic"] .banner {
+    background: #fff;
+    border-color: #000;
+    box-shadow: 0 4px 0 #000;
+  }
+  .banner::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(135deg,
+      rgba(255,138,0,.06) 0 4px,
+      transparent 4px 14px);
+    pointer-events: none;
+  }
+  .banner-logo {
+    font-family: "Bebas Neue", "Impact", sans-serif;
+    font-size: 42px; letter-spacing: 4px;
+    margin: 0; line-height: 1;
+    color: #f5f0ea;
     text-shadow:
-      0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 20px #ff4500,
-      2px 2px 0 #4a1a00, 3px 3px 0 #120300, 4px 4px 0 #000;
-    filter: drop-shadow(0 0 10px rgba(255,140,0,.85));
+      0 0 6px #ffb340, 0 0 14px #ff8a00,
+      2px 2px 0 #000, 3px 3px 0 #000;
+    position: relative;
     animation: flicker 4s infinite;
   }
-  html[data-theme="comic"] .mini-logo {
-    color: #ff8a00; text-shadow: 2px 2px 0 #000; filter: none;
+  html[data-theme="comic"] .banner-logo {
+    color: #0b0b0b; text-shadow: 3px 3px 0 #000;
+  }
+  .banner-logo span { color: var(--accent); }
+  .banner-icon {
+    font-family: "Orbitron", sans-serif;
+    font-size: 32px; font-weight: 900;
+    color: #ff8a00;
+    text-shadow: 0 0 14px rgba(255,138,0,.9);
+    margin-bottom: 6px;
+    letter-spacing: 4px;
+    display: block;
   }
 
-  /* ==== PANEL AKUN ==== */
-  .panel {
-    position: relative; width: 100%;
+  /* ==== USER CARD ==== */
+  .user-card {
+    position: relative;
     background: var(--panel);
     border: 3px solid var(--line);
     border-radius: 16px;
-    box-shadow: var(--shadow), 0 0 30px rgba(255,90,0,.4);
-    padding: 34px 18px 20px; margin-top: 6px;
-    animation: slideUp .55s cubic-bezier(.2,.9,.3,1.2) both;
-    overflow: visible;
+    padding: 16px;
+    box-shadow: var(--shadow-card);
   }
-  .panel::before {
-    content: ""; position: absolute; inset: -30px;
-    background: radial-gradient(circle at 50% 0%, rgba(255,90,0,.28), transparent 60%);
-    pointer-events: none; animation: pulseGlow 4s ease-in-out infinite;
-    z-index: -1; border-radius: 30px;
+  html[data-theme="comic"] .user-card {
+    background: #fff;
+    border-color: #000;
+    box-shadow: 0 4px 0 #000;
   }
-  html[data-theme="comic"] .panel::before { display: none; }
-  .panel-label {
-    position: absolute; top: -14px; left: 18px;
-    background: linear-gradient(180deg, #ffb340, #ff8a00);
+  .user-head {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .avatar {
+    position: relative;
+    width: 56px; height: 56px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, #4a4f5c, #2a2d35);
+    border: 3px solid var(--line);
+    border-radius: 50%;
+    color: #e8e8e8; font-size: 24px;
+    box-shadow: 0 0 16px rgba(0,0,0,.5);
+  }
+  html[data-theme="comic"] .avatar {
+    background: #f2f2f2; color: #000; border-color: #000;
+  }
+  .avatar .cam {
+    position: absolute; bottom: -4px; right: -4px;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, #ffcc00, #ff8a00);
+    border: 2px solid #000; border-radius: 50%;
+    color: #0b0b0b; font-size: 10px; font-weight: 900;
+  }
+  .user-info {
+    flex: 1; min-width: 0;
+  }
+  .user-greet {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 12px; letter-spacing: 1px;
+    color: var(--muted);
+    margin: 0 0 2px;
+  }
+  .user-name {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 13px;
+    color: var(--ink);
+    margin: 0 0 8px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .verified {
+    display: inline-block;
+    width: 14px; height: 14px;
+    background: #29b6f6;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .verified::after {
+    content: "✓"; position: absolute; inset: 0;
+    font-size: 10px; color: #fff; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .badge-fullup {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: linear-gradient(180deg, #ffcc00, #ffb340);
+    border: 2px solid #000; border-radius: 999px;
     color: #0b0b0b;
     font-family: "Orbitron", sans-serif;
-    font-weight: 900; letter-spacing: 2px; font-size: 10px;
-    padding: 5px 10px;
-    border: 3px solid #000; border-radius: 8px;
-    box-shadow: 0 4px 0 #000, 0 0 14px rgba(255,138,0,.8);
-    z-index: 2; white-space: nowrap;
-  }
-  .title {
-    font-family: "Bebas Neue", "Impact", sans-serif;
-    font-size: 40px; letter-spacing: 6px;
-    margin: 0 0 4px; line-height: 1;
-    text-align: center; color: #ff9a1f;
-    text-shadow:
-      0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 26px #ff4500,
-      2px 2px 0 #4a1a00, 4px 4px 0 #120300, 6px 6px 0 #000;
-    filter: drop-shadow(0 0 10px rgba(255,140,0,.8));
-    animation: flicker 5s infinite;
-  }
-  html[data-theme="comic"] .title {
-    color: #ff8a00;
-    text-shadow: 3px 3px 0 #000, 5px 5px 0 #000;
-    filter: none;
-  }
-  .sub {
-    text-align: center; color: var(--muted);
-    font-family: "Orbitron", sans-serif;
-    font-weight: 700; font-size: 10px;
-    letter-spacing: 2px; margin: 0 0 16px;
-    text-transform: uppercase;
+    font-weight: 900; font-size: 9px; letter-spacing: 2px;
+    box-shadow: 0 0 10px rgba(255,204,0,.7);
   }
 
-  /* ==== INFO AKUN ==== */
-  .info {
-    display: flex; flex-direction: column; gap: 10px;
-    margin-bottom: 16px;
+  /* Info kanan: suhu, jam, tag */
+  .user-side {
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 6px;
   }
-  .info-row {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px;
+  .badge-temp {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px;
+    background: #fff; color: #0b0b0b;
+    padding: 4px 10px; border-radius: 999px;
+    border: 2px solid #000;
+    box-shadow: 0 0 12px rgba(255,255,255,.3);
+  }
+  .clock {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2a2d35, #050506);
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 16px rgba(255,204,0,.6), inset 0 0 8px rgba(255,204,0,.3);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .clock::before {
+    content: ""; width: 3px; height: 16px;
+    background: #fff; border-radius: 2px;
+    position: absolute; top: 12px;
+    transform-origin: bottom center;
+    animation: tick 8s linear infinite;
+  }
+  .clock::after {
+    content: ""; width: 2px; height: 20px;
+    background: var(--gold); border-radius: 2px;
+    position: absolute; top: 8px;
+    transform-origin: bottom center;
+    animation: tick 60s linear infinite;
+  }
+  .tag {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 9px; letter-spacing: 2px;
+    padding: 3px 8px;
+    background: linear-gradient(180deg, #ffcc00, #ffb340);
+    color: #0b0b0b;
+    border-radius: 999px;
+    border: 2px solid #000;
+  }
+
+  /* Info grid (baterai & jaringan) */
+  .info-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 14px;
+  }
+  .info-card {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--panel-2);
+    border: 2.5px solid var(--line);
+    border-radius: 12px;
     padding: 10px 12px;
+    box-shadow: 0 3px 0 #000;
+  }
+  html[data-theme="comic"] .info-card {
+    background: #fff; border-color: #000; box-shadow: 0 3px 0 #000;
+  }
+  .info-icon {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    font-size: 16px; font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .info-icon.batt { background: linear-gradient(180deg, #22c55e, #16a34a); }
+  .info-icon.net  { background: linear-gradient(180deg, #06b6d4, #0891b2); }
+  .info-body { min-width: 0; }
+  .info-title {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 9px; letter-spacing: 2px;
+    color: var(--muted); margin: 0 0 2px;
+    text-transform: uppercase;
+  }
+  .info-value {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 700; font-size: 13px;
+    color: var(--ink); margin: 0;
+  }
+  .info-value.pink { color: #ec4899; }
+  .info-sub {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 10px;
+    color: var(--muted); margin: 2px 0 0;
+  }
+
+  /* 3 statistik */
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; margin-top: 12px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 2.5px solid #000;
+    border-radius: 12px;
+    padding: 10px 6px;
+    text-align: center;
+    box-shadow: 0 3px 0 #000;
+  }
+  .stat-icon {
+    width: 30px; height: 30px; margin: 0 auto 6px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid currentColor; border-radius: 50%;
+    font-size: 13px; font-weight: 900;
+  }
+  .stat-card:nth-child(1) .stat-icon { color: #ec4899; }
+  .stat-card:nth-child(2) .stat-icon { color: #f97316; }
+  .stat-card:nth-child(3) .stat-icon { color: #a16207; }
+  .stat-num {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 14px;
+    color: #0b0b0b; margin: 0 0 2px;
+  }
+  .stat-label {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 700; font-size: 9px; letter-spacing: 1px;
+    color: #4a4a4a; margin: 0 0 6px;
+    text-transform: uppercase;
+  }
+  .stat-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 8px; letter-spacing: 1px;
+    border-radius: 999px;
+    border: 2px solid #000;
+  }
+  .stat-badge.green { background: #22c55e; color: #000; }
+  .stat-badge.orange { background: #f97316; color: #000; }
+  .stat-badge.yellow { background: #facc15; color: #000; }
+
+  /* QUICK ACTIONS header */
+  .qa-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 6px;
+  }
+  .qa-title {
+    display: flex; align-items: center; gap: 8px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px; letter-spacing: 2px;
+    padding: 8px 12px;
+    background: var(--panel-2);
+    border: 2.5px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    box-shadow: 0 3px 0 #000;
+  }
+  html[data-theme="comic"] .qa-title { background: #fff; border-color: #000; }
+  .qa-title .bolt {
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold);
+    font-size: 14px;
+  }
+  .qa-view {
+    display: flex; gap: 4px;
+    padding: 4px;
     background: var(--panel-2);
     border: 2.5px solid var(--line);
     border-radius: 10px;
     box-shadow: 0 3px 0 #000;
   }
-  html[data-theme="comic"] .info-row { box-shadow: 0 3px 0 #000; }
-  .info-label {
+  html[data-theme="comic"] .qa-view { background: #fff; border-color: #000; }
+  .qa-view button {
     font-family: "Orbitron", sans-serif;
-    font-weight: 700; font-size: 10px;
-    letter-spacing: 2px; color: var(--muted);
-    text-transform: uppercase;
-  }
-  .info-value {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 13px;
-    color: var(--ink); letter-spacing: 1px;
-    text-align: right;
-    max-width: 60%;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .role-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 10px;
-    letter-spacing: 2px;
-    color: #0b0b0b;
-    background: linear-gradient(180deg, #ffb340, #ff8a00);
-    border: 2px solid #000; border-radius: 6px;
-    box-shadow: 0 0 14px rgba(255,138,0,.8);
-  }
-  .role-badge.dev {
-    background: linear-gradient(180deg, #ff4500, #7a1200);
-    color: #fff;
-    box-shadow: 0 0 16px rgba(255,69,0,.9);
-  }
-  .role-badge.reseller {
-    background: linear-gradient(180deg, #ffcc00, #ff8a00);
-    color: #0b0b0b;
-  }
-  .role-badge.user {
-    background: linear-gradient(180deg, #9ca3af, #4b5563);
-    color: #fff;
-    box-shadow: 0 0 10px rgba(156,163,175,.6);
-  }
-  .role-badge.pending {
-    background: linear-gradient(180deg, #6b7280, #374151);
-    color: #fbbf24;
-    box-shadow: 0 0 10px rgba(107,114,128,.6);
-  }
-
-  /* ==== MENU ==== */
-  .menu-title {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 11px;
-    letter-spacing: 3px; color: var(--muted);
-    text-transform: uppercase;
-    margin: 4px 0 8px;
-  }
-  .menu {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .menu-item {
-    display: flex; flex-direction: column;
-    align-items: flex-start; justify-content: center;
-    gap: 6px;
-    padding: 12px 12px;
-    background: var(--panel-2);
-    border: 2.5px solid var(--line);
-    border-radius: 10px;
-    box-shadow: 0 4px 0 #000;
-    text-decoration: none; color: var(--ink);
+    font-weight: 900; font-size: 9px; letter-spacing: 1px;
+    padding: 6px 10px;
+    background: transparent; color: var(--muted);
+    border: none; border-radius: 6px;
     cursor: pointer;
-    transition: transform .12s, box-shadow .12s, background .2s;
-    position: relative; overflow: hidden;
   }
-  .menu-item::before {
-    content: ""; position: absolute;
-    top: 0; left: -60%; width: 40%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,180,60,.35), transparent);
-    transform: skewX(-20deg); transition: left .5s ease;
+  .qa-view button.active {
+    background: linear-gradient(180deg, #ffcc00, #ffb340);
+    color: #0b0b0b;
   }
-  .menu-item:hover::before { left: 130%; }
-  .menu-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #000, 0 0 18px rgba(255,138,0,.5);
+
+  /* QUICK ACTION CARDS */
+  .qa-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 10px;
   }
-  .menu-item:active {
-    transform: translateY(2px) scale(.98);
-    box-shadow: 0 2px 0 #000;
+  .qa-card {
+    position: relative;
+    padding: 14px;
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+    text-decoration: none; color: #fff;
+    display: flex; flex-direction: column; gap: 6px;
+    min-height: 90px;
+    overflow: hidden;
+    transition: transform .12s;
   }
-  .menu-icon {
+  html[data-theme="comic"] .qa-card {
+    border-color: #000; color: #000;
+    box-shadow: 0 4px 0 #000;
+  }
+  .qa-card:active { transform: scale(.97); }
+  .qa-card.pink    { background: linear-gradient(135deg, #ec4899, #be185d); }
+  .qa-card.yellow  { background: linear-gradient(135deg, #facc15, #f59e0b); color: #000; }
+  .qa-card.orange  { background: linear-gradient(135deg, #fb923c, #ea580c); }
+  .qa-card.dark    { background: linear-gradient(135deg, #1f2937, #0f172a); }
+  .qa-card.blue    { background: linear-gradient(135deg, #06b6d4, #0369a1); }
+  .qa-card.purple  { background: linear-gradient(135deg, #a855f7, #6b21a8); }
+
+  .qa-card .icon-box {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.2);
+    border: 2px solid rgba(255,255,255,.5);
+    border-radius: 8px;
+    font-size: 14px; font-weight: 900;
+  }
+  html[data-theme="comic"] .qa-card .icon-box {
+    background: #fff; border-color: #000;
+  }
+  .qa-card .tag-corner {
+    position: absolute; top: 10px; right: 10px;
     font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 14px;
-    color: #ff8a00;
-    text-shadow: 0 0 10px rgba(255,138,0,.9);
+    font-weight: 900; font-size: 8px; letter-spacing: 1px;
+    padding: 3px 8px;
+    background: #000; color: #fff;
+    border-radius: 999px;
+    border: 2px solid #000;
   }
-  .menu-name {
+  .qa-card .label {
     font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--ink);
+    font-weight: 900; font-size: 12px; letter-spacing: 2px;
+    margin-top: auto;
   }
-  .menu-desc {
+  .qa-card .sub {
     font-family: "Rajdhani", sans-serif;
-    font-weight: 600; font-size: 11px;
-    color: var(--muted);
-    letter-spacing: .5px;
+    font-weight: 600; font-size: 10px; letter-spacing: .5px;
+    opacity: .85;
   }
 
-  .menu-item.full { grid-column: 1 / -1; }
-  .menu-item.danger .menu-icon { color: #ff4500; text-shadow: 0 0 10px rgba(255,69,0,.9); }
-
-  /* ==== STATUS LOADING ==== */
-  .loading {
-    text-align: center;
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed; left: 50%; bottom: 12px;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 12px;
+    background: rgba(20,20,20,.95);
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05);
+    backdrop-filter: blur(10px);
+    width: calc(100% - 32px);
+    max-width: 420px;
+    justify-content: space-around;
+  }
+  html[data-theme="comic"] .bottom-nav {
+    background: #fff; border-color: #000;
+    box-shadow: 0 6px 0 #000;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    color: var(--muted);
+    text-decoration: none;
     font-family: "Orbitron", sans-serif;
-    font-weight: 700; font-size: 10px;
-    letter-spacing: 3px;
+    font-weight: 700; font-size: 8px; letter-spacing: 1px;
+    transition: color .2s, transform .15s;
+  }
+  .nav-item:active { transform: scale(.9); }
+  .nav-item .nav-icon {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--panel-2);
+    border-radius: 50%;
+    font-size: 14px;
     color: var(--muted);
-    padding: 8px;
-    animation: blink 1.4s infinite;
   }
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+  html[data-theme="comic"] .nav-item .nav-icon { background: #e5e5e5; color: #000; }
+  .nav-item.active { color: #fff; }
+  html[data-theme="comic"] .nav-item.active { color: #000; }
+  .nav-item.active .nav-icon {
+    background: linear-gradient(180deg, #ff3b6b, #c2185b);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,59,107,.7);
+  }
 
-  footer {
-    position: relative; z-index: 1;
-    width: 100%; max-width: 420px; margin: 0 auto;
-    padding-top: 8px; text-align: center;
-    color: var(--footer-gray);
-    font-family: "Rajdhani", sans-serif;
-    font-weight: 600; font-size: 12px; letter-spacing: 2px;
-    border-top: 1px dashed rgba(150,150,150,.35);
-    flex-shrink: 0;
-  }
-  footer b { color: var(--footer-gray); font-weight: 700; }
-
-  @keyframes slideUp {
-    0% { opacity: 0; transform: translateY(28px) rotate(-1deg); }
-    100% { opacity: 1; transform: translateY(0) rotate(0); }
-  }
   @keyframes flicker {
     0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
     20%, 24%, 55% { opacity: .8; }
   }
-  @keyframes pulseGlow {
-    0%, 100% { opacity: .8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.06); }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .3; }
   }
-  @keyframes breathe {
-    0%, 100% { opacity: .85; }
-    50% { opacity: 1; }
-  }
-  @keyframes drift {
-    0% { transform: rotate(15deg) translate(0,0); }
-    100% { transform: rotate(15deg) translate(-20px,20px); }
+  @keyframes tick {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   @media (max-width: 360px) {
-    .title { font-size: 34px; }
-    .panel { padding: 30px 14px 18px; }
-    .menu-name { font-size: 10px; }
-    .menu-desc { font-size: 10px; }
-    .info-value { font-size: 11px; }
+    .user-name { font-size: 11px; }
+    .stat-num { font-size: 12px; }
+    .qa-card .label { font-size: 10px; }
   }
+</style>
+
+<!-- ANTI-SALIP CSS -->
+<style>
+  * {
+    -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  ::selection { background: transparent; color: inherit; }
+  ::-moz-selection { background: transparent; color: inherit; }
+  body, div, span, p, h1, h2, h3, h4, h5, h6, a, button, label {
+    cursor: default; -webkit-user-drag: none;
+  }
+  input, textarea {
+    -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text;
+    user-select: text; cursor: text;
+  }
+  img, svg { -webkit-user-drag: none; pointer-events: none; }
 </style>
 </head>
 <body>
-  <div class="vignette"></div>
-  <div class="speed-lines"></div>
 
-  <main class="wrap">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="menu-btn" id="btnMenu" type="button">≡</button>
+    <div class="brand-title">
+      <span class="dot"></span> MANTA'X
+    </div>
+    <button class="avatar-top" type="button" id="btnTopAvatar">M</button>
+  </div>
 
-    <!-- HEADER -->
-    <div class="header">
-      <a href="index.html" class="back">&lt; KEMBALI</a>
-      <h1 class="mini-logo">SMXL</h1>
+  <div class="container">
+
+    <!-- BANNER -->
+    <div class="banner">
+      <span class="banner-icon">&#9670;</span>
+      <h1 class="banner-logo">Manta<span>'x</span></h1>
     </div>
 
-    <!-- PANEL AKUN -->
-    <section class="panel">
-      <span class="panel-label">DASHBOARD AKUN</span>
-      <h2 class="title">AKUN</h2>
-      <p class="sub">Informasi & Menu</p>
-
-      <div class="loading" id="loadingText">MEMUAT DATA AKUN...</div>
-
-      <div class="info" id="infoBox" style="display:none;">
-        <div class="info-row">
-          <span class="info-label">Username</span>
-          <span class="info-value" id="valUsername">-</span>
+    <!-- USER CARD -->
+    <div class="user-card">
+      <div class="user-head">
+        <div class="avatar">
+          &#128100;
+          <span class="cam">&#9679;</span>
         </div>
-        <div class="info-row">
-          <span class="info-label">Role</span>
-          <span class="info-value" id="valRole">
-            <span class="role-badge user" id="roleBadge">USER</span>
-          </span>
+        <div class="user-info">
+          <p class="user-greet">Hey There</p>
+          <p class="user-name">
+            <span id="valUsername">user@email.com</span>
+            <span class="verified"></span>
+          </p>
+          <span class="badge-fullup">&#10022; FULLUP</span>
+        </div>
+        <div class="user-side">
+          <span class="badge-temp">&#9728; 28°C</span>
+          <div class="clock"></div>
+          <span class="tag">&#9679; WIB</span>
+          <span class="tag">&#9679; WIB</span>
         </div>
       </div>
 
-      <p class="menu-title">Menu :</p>
-      <div class="menu" id="menuBox">
-        <a class="menu-item" href="dashboard.html">
-          <span class="menu-icon">[T]</span>
-          <span class="menu-name">TEMA</span>
-          <span class="menu-desc">Ganti mode Komik/Dark</span>
-        </a>
-        <a class="menu-item" href="daftar.html">
-          <span class="menu-icon">[+]</span>
-          <span class="menu-name">DAFTAR</span>
-          <span class="menu-desc">Buat akun baru</span>
-        </a>
-        <a class="menu-item" href="index.html">
-          <span class="menu-icon">[H]</span>
-          <span class="menu-name">HOME</span>
-          <span class="menu-desc">Halaman utama</span>
-        </a>
-        <a class="menu-item" href="login.html">
-          <span class="menu-icon">[L]</span>
-          <span class="menu-name">LOGIN</span>
-          <span class="menu-desc">Masuk akun lain</span>
-        </a>
-        <a class="menu-item full danger" href="#" id="btnLogout">
-          <span class="menu-icon">[X]</span>
-          <span class="menu-name">KELUAR</span>
-          <span class="menu-desc">Hapus sesi akun di perangkat ini</span>
-        </a>
+      <!-- INFO GRID -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon batt">&#9632;</div>
+          <div class="info-body">
+            <p class="info-title">Daya Baterai</p>
+            <p class="info-value" id="valBatt">83%</p>
+            <p class="info-sub" id="valBattStatus">Daya Normal</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon net">&#9737;</div>
+          <div class="info-body">
+            <p class="info-title">Jaringan</p>
+            <p class="info-value pink" id="valNet">Wi-Fi Terhubung</p>
+            <p class="info-sub" id="valNetStatus">Status: Online</p>
+          </div>
+        </div>
       </div>
-    </section>
 
-  </main>
+      <!-- STAT GRID -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon">&#128101;</div>
+          <p class="stat-num">5260</p>
+          <p class="stat-label">Users Online</p>
+          <span class="stat-badge green">&#9679; LIVE</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#9673;</div>
+          <p class="stat-num">0</p>
+          <p class="stat-label">Sender Online</p>
+          <span class="stat-badge orange">&#9679; STANDBY</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">&#9633;</div>
+          <p class="stat-num" id="valRole">User</p>
+          <p class="stat-label">Expired</p>
+          <span class="stat-badge yellow">&#9679; Active</span>
+        </div>
+      </div>
+    </div>
 
-  <footer><b>@created by samil</b></footer>
+    <!-- QUICK ACTIONS HEADER -->
+    <div class="qa-header">
+      <div class="qa-title"><span class="bolt">&#9889;</span> QUICK ACTIONS</div>
+      <div class="qa-view">
+        <button class="active" type="button">&#9638; GRID</button>
+        <button type="button">&#9776; SLIDE</button>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS GRID -->
+    <div class="qa-grid">
+      <a class="qa-card pink" href="dashboard.html">
+        <span class="tag-corner">MONEY</span>
+        <div class="icon-box">&#128176;</div>
+        <span class="label">TABUNGANKU</span>
+        <span class="sub">Catatan Keuangan</span>
+      </a>
+
+      <a class="qa-card yellow" href="#">
+        <span class="tag-corner">SENDER</span>
+        <div class="icon-box">&#128241;</div>
+        <span class="label">BUG SENDER</span>
+        <span class="sub">WhatsApp Multi-Device</span>
+      </a>
+
+      <a class="qa-card orange" href="login.html">
+        <span class="tag-corner">CHAT</span>
+        <div class="icon-box">&#128172;</div>
+        <span class="label">CHAT ROOM</span>
+        <span class="sub">Komunikasi Grup</span>
+      </a>
+
+      <a class="qa-card dark" href="#">
+        <span class="tag-corner">GITHUB</span>
+        <div class="icon-box">&lt;/&gt;</div>
+        <span class="label">REPO GITHUB</span>
+        <span class="sub">Source Code</span>
+      </a>
+
+      <a class="qa-card blue" href="#">
+        <span class="tag-corner">TEST</span>
+        <div class="icon-box">&#9881;</div>
+        <span class="label">TOOLS</span>
+        <span class="sub">Utilitas SMXL</span>
+      </a>
+
+      <a class="qa-card purple" href="#">
+        <span class="tag-corner">PRO</span>
+        <div class="icon-box">&#9733;</div>
+        <span class="label">PRO TOOLS</span>
+        <span class="sub">Fitur Premium</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a class="nav-item active" href="akun.html">
+      <span class="nav-icon">&#8962;</span>
+      <span>Beranda</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#128172;</span>
+      <span>WA Menu</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">&#128101;</span>
+      <span>Bug Group</span>
+    </a>
+    <a class="nav-item" href="dashboard.html">
+      <span class="nav-icon">&#9881;</span>
+      <span>Tools</span>
+    </a>
+  </nav>
 
 <script>
 /* =========================================================
-   KONFIG
+   KONFIG BOT
    ========================================================= */
 const BOT_API_URL = "http://127.0.0.1:8080";
 
-/* THEME (dipakai bersama) */
+/* THEME */
 const html = document.documentElement;
 let saved = 'dark';
 try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
 html.setAttribute('data-theme', saved);
 
-/* =========================================================
-   AMBIL DATA USER DARI SERVER (bot)
-   - Web kirim username yang sedang login
-   - Server balas role: developer / reseller / user / pending
-   ========================================================= */
-const loadingText = document.getElementById('loadingText');
-const infoBox     = document.getElementById('infoBox');
-const valUsername = document.getElementById('valUsername');
-const roleBadge   = document.getElementById('roleBadge');
+/* AMBIL USERNAME & ROLE */
+const elUsername = document.getElementById('valUsername');
+const elRole = document.getElementById('valRole');
 
 async function loadAccount() {
-  // Ambil username dari localStorage (disimpan saat login)
   let username = "";
   try { username = localStorage.getItem('smxl-user') || ""; } catch(e) {}
 
-  // Kalau belum login, tampilkan sebagai GUEST
   if (!username) {
-    showAccount("(belum login)", "guest");
+    elUsername.textContent = "guest@smxl";
+    elRole.textContent = "Guest";
     return;
   }
 
-  valUsername.textContent = username;
+  elUsername.textContent = username;
 
   try {
     const res = await fetch(BOT_API_URL + "/role?username=" + encodeURIComponent(username));
     const data = await res.json();
-
     let role = (data && data.role) ? data.role : "user";
-    showAccount(username, role);
-
+    renderRole(role);
   } catch (err) {
-    console.warn("Gagal ambil role dari server:", err);
-    // Fallback: cek dari localStorage (kalau pernah di-set saat login)
     let cachedRole = "user";
     try { cachedRole = localStorage.getItem('smxl-role') || 'user'; } catch(e) {}
-    showAccount(username, cachedRole);
+    renderRole(cachedRole);
   }
 }
 
-function showAccount(username, role) {
-  loadingText.style.display = 'none';
-  infoBox.style.display = 'flex';
-  valUsername.textContent = username;
-
-  // Normalisasi role
+function renderRole(role) {
   const r = String(role).toLowerCase();
-  let label = "USER";
-  let cls = "user";
-  if (r === "developer" || r === "dev") { label = "DEVELOPER"; cls = "dev"; }
-  else if (r === "reseller")            { label = "RESELLER";  cls = "reseller"; }
-  else if (r === "pending")             { label = "PENDING ACC"; cls = "pending"; }
-  else if (r === "guest")               { label = "GUEST"; cls = "pending"; }
-  else                                   { label = "USER"; cls = "user"; }
-
-  roleBadge.textContent = label;
-  roleBadge.className = "role-badge " + cls;
-
-  // Menu tambahan untuk developer / reseller
-  if (cls === "dev" || cls === "reseller") {
-    // Tambahkan menu khusus sebelum tombol KELUAR
-    const logout = document.getElementById('btnLogout');
-    if (!document.getElementById('menuManage')) {
-      const manage = document.createElement('a');
-      manage.className = 'menu-item full';
-      manage.id = 'menuManage';
-      manage.href = '#';
-      manage.innerHTML = `
-        <span class="menu-icon">[M]</span>
-        <span class="menu-name">MANAGE USER</span>
-        <span class="menu-desc">Kelola pendaftaran lewat bot Telegram</span>
-      `;
-      manage.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Kelola user dilakukan lewat Bot Telegram (@S4MX1L).\\n\\nPerintah:\\n/list\\n/acc SMXL-XXXX\\n/reject SMXL-XXXX');
-      });
-      logout.parentNode.insertBefore(manage, logout);
-    }
-  }
+  let label = "User";
+  if (r === "developer" || r === "dev") label = "Dev";
+  else if (r === "reseller")            label = "Reseller";
+  else if (r === "pending")             label = "Pending";
+  else if (r === "guest")               label = "Guest";
+  elRole.textContent = label;
 }
 
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-document.getElementById('btnLogout').addEventListener('click', (e) => {
-  e.preventDefault();
-  if (!confirm('Keluar dari akun ini?')) return;
-  try {
-    localStorage.removeItem('smxl-user');
-    localStorage.removeItem('smxl-role');
-  } catch(e) {}
-  location.href = 'login.html';
-});
-
-/* Jalankan */
 loadAccount();
+
+/* ====== INFO BATERAI ====== */
+if (navigator.getBattery) {
+  navigator.getBattery().then(b => {
+    const pct = Math.round(b.level * 100);
+    document.getElementById('valBatt').textContent = pct + "%";
+    document.getElementById('valBattStatus').textContent =
+      b.charging ? "Sedang Mengisi" : (pct > 60 ? "Daya Normal" : pct > 20 ? "Daya Sedang" : "Daya Rendah");
+    b.addEventListener('levelchange', () => {
+      const p2 = Math.round(b.level * 100);
+      document.getElementById('valBatt').textContent = p2 + "%";
+    });
+  }).catch(() => {});
+}
+
+/* ====== INFO JARINGAN ====== */
+function updateNet() {
+  const online = navigator.onLine;
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  let type = "Wi-Fi Terhubung";
+  if (conn && conn.effectiveType) type = "Jaringan " + conn.effectiveType.toUpperCase();
+  document.getElementById('valNet').textContent = online ? type : "Offline";
+  document.getElementById('valNetStatus').textContent = "Status: " + (online ? "Online" : "Offline");
+}
+updateNet();
+window.addEventListener('online', updateNet);
+window.addEventListener('offline', updateNet);
+
+/* ====== TOMBOL TOP ====== */
+document.getElementById('btnMenu').addEventListener('click', () => {
+  if (confirm('Keluar dari akun?')) {
+    try { localStorage.removeItem('smxl-user'); localStorage.removeItem('smxl-role'); } catch(e) {}
+    location.href = 'login.html';
+  }
+});
+document.getElementById('btnTopAvatar').addEventListener('click', () => {
+  location.href = 'akun.html';
+});
+</script>
+
+<!-- ANTI-SALIP JS -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('cut', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('selectstart', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag !== 'input' && tag !== 'textarea') e.preventDefault();
+  });
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const isInput = tag === 'input' || tag === 'textarea';
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (isInput && ctrl && ['c','v','x','a'].includes(e.key.toLowerCase())) return;
+    if (ctrl && ['c','x','a','u','s'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
 </script>
 </body>
-  </html>
+      </html>
