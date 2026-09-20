@@ -9,27 +9,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #050506;
-    --panel: #0f0b0a;
-    --panel-2: #171010;
-    --ink: #f5f0ea;
-    --muted: #8a7d78;
-    --line: #e9edf5;
-    --footer-gray: #9ca3af;
+    --bg:#050506; --panel:#0f0b0a; --panel-2:#171010;
+    --ink:#f5f0ea; --muted:#8a7d78; --line:#e9edf5;
+    --shadow:0 10px 0 #000, 0 14px 24px rgba(0,0,0,.6);
+    --footer-gray:#9ca3af;
   }
-  html[data-theme="dark"] {
-    --bg: #050506; --ink: #f5f0ea; --muted: #8a7d78; --footer-gray: #9ca3af;
-  }
+  html[data-theme="dark"] { --bg:#050506; --ink:#f5f0ea; --muted:#8a7d78; --footer-gray:#9ca3af; }
   html[data-theme="comic"] {
-    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7;
-    --ink: #0b0b0b; --muted: #4a4a4a; --line: #0b0b0b;
-    --footer-gray: #6b7280;
+    --bg:#f2f2f2; --panel:#ffffff; --panel-2:#f7f7f7;
+    --ink:#0b0b0b; --muted:#4a4a4a; --line:#0b0b0b;
+    --shadow:0 8px 0 #000, 0 12px 20px rgba(0,0,0,.25);
+    --footer-gray:#6b7280;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
-
   body {
-    font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
+    font-family: "Rajdhani","Trebuchet MS",system-ui,sans-serif;
     font-weight: 600;
     background:
       radial-gradient(circle at 20% 10%, rgba(255,138,0,.16), transparent 45%),
@@ -37,13 +32,12 @@
       var(--bg);
     color: var(--ink);
     display: flex; flex-direction: column;
-    min-height: 100dvh;
-    padding: 20px 18px 14px;
+    min-height: 100dvh; padding: 20px 18px 14px;
     position: relative; overflow: hidden;
     transition: background .5s ease, color .4s ease;
   }
   body::before {
-    content: ""; position: fixed; inset: 0;
+    content:""; position: fixed; inset: 0;
     background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
     background-size: 14px 14px; pointer-events: none; z-index: 0;
   }
@@ -65,12 +59,10 @@
     animation: rise linear infinite;
   }
   html[data-theme="comic"] .embers { display: none; }
-
   .wrap {
     position: relative; z-index: 1;
     width: 100%; max-width: 420px; margin: 0 auto;
-    flex: 1;
-    display: flex; flex-direction: column; align-items: center;
+    flex: 1; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 18px; padding: 6px 0;
   }
   .logo-stage { position: relative; display: inline-block; padding: 6px 4px; }
@@ -85,11 +77,10 @@
   }
   .logo {
     position: relative; z-index: 1;
-    font-family: "Bebas Neue", "Impact", "Arial Black", sans-serif;
+    font-family: "Bebas Neue","Impact","Arial Black",sans-serif;
     font-size: clamp(60px, 20vw, 96px);
     letter-spacing: 2px; margin: 0; line-height: 1;
-    transform: skewX(-8deg);
-    color: #ff9a1f;
+    transform: skewX(-8deg); color: #ff9a1f;
     text-shadow:
       0 0 6px #ffb340, 0 0 14px #ff8a00, 0 0 28px #ff4500,
       2px 2px 0 #4a1a00, 4px 4px 0 #2a0f00, 6px 6px 0 #120300, 8px 8px 0 #000;
@@ -105,61 +96,51 @@
     text-shadow: 0 0 12px #ffcc66;
   }
   html[data-theme="comic"] .logo {
-    color: #ff8a00; text-shadow: 3px 3px 0 #000, 5px 5px 0 #000; filter: none;
+    color:#ff8a00; text-shadow:3px 3px 0 #000,5px 5px 0 #000; filter:none;
   }
   .tagline {
     text-align: center; color: var(--muted);
-    font-family: "Orbitron", sans-serif; font-weight: 700;
-    font-size: 11px; letter-spacing: 5px;
-    text-transform: uppercase; margin: 0;
-    text-shadow: 0 0 8px rgba(255,138,0,.6);
+    font-family:"Orbitron",sans-serif; font-weight:700;
+    font-size:11px; letter-spacing:5px; text-transform:uppercase; margin:0;
+    text-shadow:0 0 8px rgba(255,138,0,.6);
   }
-  .actions { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+  .actions { width:100%; display:flex; flex-direction:column; gap:14px; }
   .btn {
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-    gap: 12px; width: 100%; padding: 16px 20px;
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 17px; letter-spacing: 4px;
-    text-decoration: none; color: #0b0b0b;
-    background: linear-gradient(180deg, #ffb340, #ff8a00);
-    border: 3px solid var(--line); border-radius: 12px;
-    box-shadow: 0 6px 0 #000, 0 10px 22px rgba(255,90,0,.4), 0 0 24px rgba(255,138,0,.5);
-    cursor: pointer; user-select: none;
-    transition: transform .12s ease, box-shadow .12s ease, background .2s ease;
-    overflow: hidden;
+    position:relative; display:flex; align-items:center; justify-content:center;
+    gap:12px; width:100%; padding:16px 20px;
+    font-family:"Orbitron",sans-serif; font-weight:900;
+    font-size:17px; letter-spacing:4px;
+    text-decoration:none; color:#0b0b0b;
+    background:linear-gradient(180deg,#ffb340,#ff8a00);
+    border:3px solid var(--line); border-radius:12px;
+    box-shadow:0 6px 0 #000, 0 10px 22px rgba(255,90,0,.4), 0 0 24px rgba(255,138,0,.5);
+    cursor:pointer; user-select:none;
+    transition:transform .12s ease, box-shadow .12s ease, background .2s ease;
+    overflow:hidden;
   }
-  html[data-theme="comic"] .btn { background: #fff; color: #000; box-shadow: 0 6px 0 #000; }
-  .btn.dash {
-    background: linear-gradient(180deg, #ff4500, #7a1200); color: #fff;
-  }
-  html[data-theme="comic"] .btn.dash { background: #000; color: #fff; }
+  html[data-theme="comic"] .btn { background:#fff; color:#000; box-shadow:0 6px 0 #000; }
+  .btn.dash { background:linear-gradient(180deg,#ff4500,#7a1200); color:#fff; }
+  html[data-theme="comic"] .btn.dash { background:#000; color:#fff; }
   .btn::before {
-    content: ""; position: absolute;
-    top: 0; left: -60%; width: 40%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
-    transform: skewX(-20deg); transition: left .5s ease;
+    content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.75), transparent);
+    transform:skewX(-20deg); transition:left .5s ease;
   }
-  .btn:hover::before { left: 130%; }
-  .btn:hover { transform: translateY(-2px); }
+  .btn:hover::before { left:130%; }
+  .btn:hover { transform:translateY(-2px); }
   .btn:active {
-    transform: translateY(4px) scale(.98);
-    box-shadow: 0 2px 0 #000, 0 4px 8px rgba(0,0,0,.5);
+    transform:translateY(4px) scale(.98);
+    box-shadow:0 2px 0 #000, 0 4px 8px rgba(0,0,0,.5);
   }
-  .btn .mark { font-family: "Orbitron", sans-serif; font-weight: 900; font-size: 15px; opacity: .85; }
-
+  .btn .mark { font-family:"Orbitron",sans-serif; font-weight:900; font-size:15px; opacity:.85; }
   footer {
-    position: relative; z-index: 1;
-    width: 100%; max-width: 420px; margin: 0 auto;
-    padding-top: 10px; text-align: center;
-    color: var(--footer-gray);
-    font-family: "Rajdhani", sans-serif;
-    font-weight: 600; font-size: 12px; letter-spacing: 2px;
-    border-top: 1px dashed rgba(150,150,150,.35);
-    flex-shrink: 0;
+    position:relative; z-index:1; width:100%; max-width:420px; margin:0 auto;
+    padding-top:10px; text-align:center; color:var(--footer-gray);
+    font-family:"Rajdhani",sans-serif; font-weight:600;
+    font-size:12px; letter-spacing:2px;
+    border-top:1px dashed rgba(150,150,150,.35); flex-shrink:0;
   }
-  footer b { color: var(--footer-gray); font-weight: 700; }
-
+  footer b { color:var(--footer-gray); font-weight:700; }
   @keyframes pulseGlow { 0%,100%{opacity:.85;transform:scale(1);} 50%{opacity:1;transform:scale(1.1);} }
   @keyframes flicker { 0%,18%,22%,25%,53%,57%,100%{opacity:1;} 20%,24%,55%{opacity:.78;} }
   @keyframes glitch {
@@ -176,15 +157,32 @@
     100%{transform:translateY(-110vh) scale(.4);opacity:0;}
   }
   @media (max-height: 700px) {
-    .logo { font-size: clamp(52px, 18vw, 80px); }
-    .wrap { gap: 12px; }
-    .btn { padding: 14px 18px; font-size: 15px; }
-    footer { font-size: 11px; padding-top: 8px; }
+    .logo { font-size: clamp(52px,18vw,80px); }
+    .wrap { gap:12px; }
+    .btn { padding:14px 18px; font-size:15px; }
+    footer { font-size:11px; padding-top:8px; }
   }
   @media (max-width: 360px) {
     .logo { font-size: 60px; }
-    .btn { font-size: 14px; padding: 13px; letter-spacing: 3px; }
+    .btn { font-size:14px; padding:13px; letter-spacing:3px; }
   }
+</style>
+
+<!-- ANTI-SALIP CSS -->
+<style>
+  * {
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
+    user-select:none; -webkit-tap-highlight-color:transparent;
+    -webkit-touch-callout:none;
+  }
+  ::selection { background:transparent; color:inherit; }
+  ::-moz-selection { background:transparent; color:inherit; }
+  body,div,span,p,h1,h2,h3,h4,h5,h6,a,button,label { cursor:default; -webkit-user-drag:none; }
+  input,textarea {
+    -webkit-user-select:text; -moz-user-select:text; -ms-user-select:text;
+    user-select:text; cursor:text;
+  }
+  img,svg { -webkit-user-drag:none; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -229,6 +227,26 @@
     e.style.animationDelay = (Math.random() * 8) + 's';
     emberBox.appendChild(e);
   }
+</script>
+
+<!-- ANTI-SALIP JS -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('cut', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('selectstart', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag !== 'input' && tag !== 'textarea') e.preventDefault();
+  });
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const isInput = tag === 'input' || tag === 'textarea';
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (isInput && ctrl && ['c','v','x','a'].includes(e.key.toLowerCase())) return;
+    if (ctrl && ['c','x','a','u','s'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
 </script>
 </body>
 </html>
