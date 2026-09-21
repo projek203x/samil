@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parental Control</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .device {
+    text-align: center;
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  .device b { color: #38bdf8; }
+  .section-title {
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 20px 0 8px 4px;
+  }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    margin: 6px 0;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .camera      { background: #2563eb; }
+  .camera-back { background: #1d4ed8; }
+  .lock        { background: #dc2626; }
+  .unlock      { background: #16a34a; }
+  .flash-on    { background: #eab308; color: #000; }
+  .flash-off   { background: #6b7280; }
+  .card {
+    background: #1e293b;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
+  }
+  .card label {
+    display: block;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .status {
+    font-size: 13px;
+    color: #94a3b8;
+    padding: 10px;
+    background: #0f172a;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  .status b { color: #38bdf8; }
+</style>
+</head>
+<body>
+
+<h1>👨‍👩‍👧 Parental Control</h1>
+<div class="subtitle">Panel Orang Tua</div>
+
+<div class="device">Device: <b>ANAK01</b></div>
+
+<div class="section-title">📷 Kamera</div>
+<button class="btn camera"      onclick="sendCmd('camera_front')">📷 Kamera Depan</button>
+<button class="btn camera-back" onclick="sendCmd('camera_back')">📷 Kamera Belakang</button>
+
+<div class="section-title">🔒 Kunci Device</div>
+<div class="card">
+  <label>Password Unlock:</label>
+  <input id="passInput" type="text" placeholder="Contoh: 1234" maxlength="8">
+  <button class="btn lock"   onclick="lockDevice()">🔒 Lock Device</button>
+  <button class="btn unlock" onclick="sendCmd('unlock')">🔓 Unlock Device</button>
+</div>
+
+<div class="section-title">🔦 Flash</div>
+<button class="btn flash-on"  onclick="sendCmd('flash_on')">🔦 Flash ON</button>
+<button class="btn flash-off" onclick="sendCmd('flash_off')">🔦 Flash OFF</button>
+
+<div class="card">
+  <b>📡 Status Terakhir:</b>
+  <div class="status" id="status">Menunggu perintah...</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getDatabase, ref, set, onValue }
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+// 🔧 CONFIG FIREBASE — sudah sesuai punyamu
+const firebaseConfig = {
+  apiKey: "AIzaSyAkTXsAN1iq9BELFrqK6AvOk5ArVUf-HK0",
+  databaseURL: "https://smxl-b7286-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "smxl-b7286",
+  appId: "1:1016397209932:web:df6efb419a29174586efe9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const DEVICE = "ANAK01";
+
+// Kirim perintah ke Firebase
+window.sendCmd = function(action) {
+  set(ref(db, `devices/${DEVICE}/commands`), {
+    action: action,
+    timestamp: Date.now()
+  })
+  .then(() => {
+    setStatus("✅ Terkirim: " + action);
+  })
+  .catch(err => {
+    setStatus("❌ Error: " + err.message);
+  });
+}
+
+// Kirim perintah lock + password
+window.lockDevice = function() {
+  const pwd = document.getElementById("passInput").value.trim();
+  if (pwd.length < 4) {
+    alert("Password minimal 4 karakter!");
+    return;
+  }
+  set(ref(db, `devices/${DEVICE}/commands`), {
+    action: "lock",
+    password: pwd,
+    timestamp: Date.now()
+  })
+  .then(() => {
+    setStatus("🔒 Perintah LOCK dikirim (password: " + pwd + ")");
+  })
+  .catch(err => {
+    setStatus("❌ Error: " + err.message);
+  });
+}
+
+// Helper update status
+function setStatus(msg) {
+  document.getElementById("status").innerHTML = msg;
+}
+
+// Listen hasil dari APK
+onValue(ref(db, `devices/${DEVICE}/result`), (snap) => {
+  const data = snap.val();
+  if (!data) return;
+  const waktu = new Date().toLocaleTimeString();
+  setStatus("📡 <b>" + (data.status || "-") + "</b><br><small>" + waktu + "</small>");
+});
+</script>
+
+</body>
+  </html>
