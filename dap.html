@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SMXL — Parental Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050506;
+    --panel: #16181d;
+    --panel-2: #1e2128;
+    --ink: #f5f0ea;
+    --muted: #8a8f9c;
+    --line: #2b2f38;
+    --accent: #ff8a00;
+    --gold: #ffcc00;
+    --pink: #ff2d6b;
+    --topbar-bg: linear-gradient(180deg, rgba(255,45,107,.98), rgba(230,30,90,.92));
+    --footer-gray: #9ca3af;
+    --shadow-card: 0 4px 0 #000, 0 6px 12px rgba(0,0,0,.4);
+    --ok: #22c55e;
+    --err: #dc2626;
+    --warn: #facc15;
+  }
+  html[data-theme="dark"] {
+    --bg: #050506; --panel: #16181d; --panel-2: #1e2128;
+    --ink: #f5f0ea; --muted: #8a8f9c; --line: #2b2f38;
+    --topbar-bg: linear-gradient(180deg, rgba(255,45,107,.98), rgba(230,30,90,.92));
+    --footer-gray: #9ca3af;
+    --shadow-card: 0 4px 0 #000, 0 6px 12px rgba(0,0,0,.4);
+  }
+  html[data-theme="comic"] {
+    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7;
+    --ink: #0b0b0b; --muted: #4a4a4a; --line: #0b0b0b;
+    --topbar-bg: #ffffff;
+    --footer-gray: #6b7280;
+    --shadow-card: 0 4px 0 #000;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; min-height: 100%; }
+
+  body {
+    font-family: "Rajdhani", "Trebuchet MS", system-ui, sans-serif;
+    font-weight: 600;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100dvh;
+    padding: 0 0 90px 0;
+    position: relative;
+    overflow-x: hidden;
+    transition: background .4s ease, color .3s ease;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 14px 14px; pointer-events: none; z-index: 0;
+  }
+  html[data-theme="comic"] body::before {
+    background-image: radial-gradient(rgba(0,0,0,.1) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--topbar-bg);
+    box-shadow: 0 4px 16px rgba(0,0,0,.5);
+    transition: background .4s ease;
+  }
+  html[data-theme="comic"] .topbar {
+    border-bottom: 3px solid #000;
+    box-shadow: 0 4px 0 #000;
+  }
+  .back-btn {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,.3);
+    border: 2px solid rgba(255,255,255,.35);
+    border-radius: 50%;
+    color: #fff; font-size: 14px; font-weight: 900;
+    cursor: pointer; text-decoration: none;
+    font-family: "Orbitron", sans-serif;
+  }
+  html[data-theme="comic"] .back-btn {
+    background: #fff; color: #000; border-color: #000;
+  }
+  .back-btn:active { transform: scale(.9); }
+
+  .brand-title {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: 3px;
+    color: #fff;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    background: rgba(0,0,0,.4);
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 999px;
+  }
+  html[data-theme="comic"] .brand-title {
+    background: #f2f2f2; color: #000; border-color: #000;
+  }
+  .brand-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+    animation: blink 1.4s infinite;
+  }
+  .theme-mini {
+    display: flex; gap: 4px;
+    padding: 4px;
+    background: rgba(0,0,0,.35);
+    border: 2px solid rgba(255,255,255,.25);
+    border-radius: 999px;
+  }
+  html[data-theme="comic"] .theme-mini {
+    background: #fff; border-color: #000;
+  }
+  .theme-mini button {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 9px; letter-spacing: 1px;
+    padding: 6px 10px;
+    background: transparent; color: #fff;
+    border: none; border-radius: 999px; cursor: pointer;
+  }
+  html[data-theme="comic"] .theme-mini button { color: #000; }
+  .theme-mini button.active {
+    background: linear-gradient(180deg, #ffcc00, #ff8a00);
+    color: #0b0b0b;
+  }
+
+  /* CONTAINER */
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 440px; margin: 0 auto;
+    padding: 16px 14px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  /* HEADER */
+  .page-header {
+    text-align: center;
+    padding: 4px 0 8px;
+  }
+  .page-title {
+    font-family: "Bebas Neue", "Impact", sans-serif;
+    font-size: 40px; letter-spacing: 5px;
+    margin: 0 0 4px;
+    color: #ff9a1f;
+    text-shadow:
+      0 0 6px #ffb340, 0 0 14px #ff8a00,
+      2px 2px 0 #4a1a00, 3px 3px 0 #120300, 4px 4px 0 #000;
+    animation: flicker 4s infinite;
+  }
+  html[data-theme="comic"] .page-title {
+    color: #ff8a00;
+    text-shadow: 3px 3px 0 #000;
+  }
+  .page-sub {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase;
+    margin: 0;
+  }
+
+  /* DEVICE INFO CARD */
+  .device-card {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow-card);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  html[data-theme="comic"] .device-card { background: #fff; }
+  .device-label {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px; letter-spacing: 2px;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .device-name {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 14px;
+    color: #29b6f6; letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(41,182,246,.7);
+  }
+  .device-status {
+    display: flex; align-items: center; gap: 6px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 9px; letter-spacing: 2px;
+    color: var(--ok);
+  }
+  .device-status .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 8px var(--ok);
+    animation: blink 1.4s infinite;
+  }
+
+  /* SECTION */
+  .section-title {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase;
+    padding: 4px 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before {
+    content: ""; width: 4px; height: 14px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* BUTTONS */
+  .btn {
+    width: 100%;
+    padding: 14px 16px;
+    border: 3px solid #000;
+    border-radius: 12px;
+    color: #fff;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: 3px;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s, filter .2s;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 0 #000;
+    text-transform: uppercase;
+  }
+  .btn:active {
+    transform: translateY(3px) scale(.98);
+    box-shadow: 0 1px 0 #000;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:disabled {
+    opacity: .5; cursor: not-allowed;
+    filter: grayscale(.6);
+  }
+
+  .btn-camera  { background: linear-gradient(180deg, #3b82f6, #1e40af); }
+  .btn-camera-back { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
+  .btn-lock    { background: linear-gradient(180deg, #ef4444, #991b1b); }
+  .btn-unlock  { background: linear-gradient(180deg, #22c55e, #15803d); }
+  .btn-flash-on  { background: linear-gradient(180deg, #facc15, #ca8a04); color: #0b0b0b; }
+  .btn-flash-off { background: linear-gradient(180deg, #6b7280, #374151); }
+
+  /* CARD */
+  .card {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: var(--shadow-card);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  html[data-theme="comic"] .card { background: #fff; }
+  .card label {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 10px; letter-spacing: 2px;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .card input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2.5px solid var(--line);
+    background: var(--panel-2);
+    color: var(--ink);
+    font-size: 16px;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    letter-spacing: 4px;
+    outline: none;
+    box-shadow: 0 3px 0 #000;
+    text-align: center;
+  }
+  html[data-theme="comic"] .card input {
+    background: #fff; border-color: #000;
+  }
+  .card input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 3px 0 #000, 0 0 0 4px rgba(255,138,0,.28), 0 0 22px rgba(255,138,0,.5);
+  }
+
+  /* STATUS */
+  .status {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding: 12px 14px;
+    background: var(--panel-2);
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 3px 0 #000;
+    min-height: 44px;
+    display: flex; align-items: center;
+    line-height: 1.4;
+  }
+  html[data-theme="comic"] .status { background: #fff; border-color: #000; }
+  .status b { color: #29b6f6; }
+  .status small { color: var(--muted); opacity: .8; }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 440px; margin: 12px auto 0;
+    padding: 12px 16px 0;
+    text-align: center;
+    color: var(--footer-gray);
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600; font-size: 12px; letter-spacing: 2px;
+    border-top: 1px dashed rgba(150,150,150,.35);
+  }
+  footer b { color: var(--footer-gray); font-weight: 700; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; left: 50%; bottom: 12px;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 12px;
+    background: rgba(20,20,20,.95);
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.7);
+    backdrop-filter: blur(10px);
+    width: calc(100% - 32px); max-width: 420px;
+    justify-content: space-around;
+  }
+  html[data-theme="comic"] .bottom-nav {
+    background: #fff; border-color: #000;
+    box-shadow: 0 6px 0 #000;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px; padding: 6px 8px;
+    color: var(--muted); text-decoration: none;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700; font-size: 8px; letter-spacing: 1px;
+  }
+  .nav-item .nav-icon {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--panel-2);
+    border-radius: 50%;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 12px;
+    color: var(--muted);
+  }
+  html[data-theme="comic"] .nav-item .nav-icon { background: #e5e5e5; color: #000; }
+  .nav-item.active { color: var(--ink); }
+  .nav-item.active .nav-icon {
+    background: linear-gradient(180deg, #ff2d6b, #c2185b);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255,45,107,.7);
+  }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  @keyframes flicker {
+    0%,18%,22%,25%,53%,57%,100%{opacity:1;}
+    20%,24%,55%{opacity:.8;}
+  }
+</style>
+
+<!-- ANTI-SALIP CSS -->
+<style>
+  * {
+    -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  ::selection { background: transparent; color: inherit; }
+  ::-moz-selection { background: transparent; color: inherit; }
+  body, div, span, p, h1, h2, h3, h4, h5, h6, a, button, label {
+    cursor: default; -webkit-user-drag: none;
+  }
+  input, textarea {
+    -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text;
+    user-select: text; cursor: text;
+  }
+  img, svg { -webkit-user-drag: none; }
+</style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="back-btn" href="menuu.html">&lt;</a>
+    <div class="brand-title">
+      <span class="dot"></span> PARENTAL
+    </div>
+    <div class="theme-mini">
+      <button id="btnComic" type="button">KOMIK</button>
+      <button id="btnDark" type="button">DARK</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="page-header">
+      <h1 class="page-title">PARENTAL</h1>
+      <p class="page-sub">Panel Orang Tua</p>
+    </div>
+
+    <!-- DEVICE CARD -->
+    <div class="device-card">
+      <div>
+        <div class="device-label">Device</div>
+        <div class="device-name">ANAK01</div>
+      </div>
+      <div class="device-status">
+        <span class="pulse"></span> ONLINE
+      </div>
+    </div>
+
+    <!-- KAMERA -->
+    <div class="section-title">Kamera</div>
+    <button class="btn btn-camera" onclick="sendCmd('camera_front')">Kamera Depan</button>
+    <button class="btn btn-camera-back" onclick="sendCmd('camera_back')">Kamera Belakang</button>
+
+    <!-- KUNCI DEVICE -->
+    <div class="section-title">Kunci Device</div>
+    <div class="card">
+      <label>Password Unlock</label>
+      <input id="passInput" type="text" placeholder="1234" maxlength="8" inputmode="numeric">
+      <button class="btn btn-lock" onclick="lockDevice()">Lock Device</button>
+      <button class="btn btn-unlock" onclick="sendCmd('unlock')">Unlock Device</button>
+    </div>
+
+    <!-- FLASH -->
+    <div class="section-title">Flash</div>
+    <button class="btn btn-flash-on" onclick="sendCmd('flash_on')">Flash ON</button>
+    <button class="btn btn-flash-off" onclick="sendCmd('flash_off')">Flash OFF</button>
+
+    <!-- STATUS -->
+    <div class="section-title">Status Terakhir</div>
+    <div class="status" id="status">Menunggu perintah...</div>
+
+  </div>
+
+  <footer>
+    <b>@created by samil</b>
+  </footer>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a class="nav-item" href="akun.html">
+      <span class="nav-icon">H</span>
+      <span>Beranda</span>
+    </a>
+    <a class="nav-item" href="menuu.html">
+      <span class="nav-icon">M</span>
+      <span>Menu</span>
+    </a>
+    <a class="nav-item active" href="dap.html">
+      <span class="nav-icon">P</span>
+      <span>Parental</span>
+    </a>
+    <a class="nav-item" href="dashboard.html">
+      <span class="nav-icon">T</span>
+      <span>Tools</span>
+    </a>
+  </nav>
+
+<script>
+  /* ===== THEME ===== */
+  const html = document.documentElement;
+  const btnComic = document.getElementById('btnComic');
+  const btnDark  = document.getElementById('btnDark');
+
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    btnComic.classList.toggle('active', theme === 'comic');
+    btnDark.classList.toggle('active', theme === 'dark');
+    try { localStorage.setItem('smxl-theme', theme); } catch(e) {}
+  }
+
+  let saved = 'dark';
+  try { saved = localStorage.getItem('smxl-theme') || 'dark'; } catch(e) {}
+  setTheme(saved);
+
+  btnComic.addEventListener('click', () => setTheme('comic'));
+  btnDark.addEventListener('click', () => setTheme('dark'));
+</script>
+
+<!-- FIREBASE + PARENTAL CONTROL -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getDatabase, ref, set, onValue }
+  from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkTXsAN1iq9BELFrqK6AvOk5ArVUf-HK0",
+  databaseURL: "https://smxl-b7286-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "smxl-b7286",
+  appId: "1:1016397209932:web:df6efb419a29174586efe9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const DEVICE = "ANAK01";
+
+function setStatus(msg) {
+  document.getElementById("status").innerHTML = msg;
+}
+
+window.sendCmd = function(action) {
+  set(ref(db, `devices/${DEVICE}/commands`), {
+    action: action,
+    timestamp: Date.now()
+  })
+  .then(() => setStatus("Terkirim: <b>" + action + "</b>"))
+  .catch(err => setStatus("Error: " + err.message));
+};
+
+window.lockDevice = function() {
+  const pwd = document.getElementById("passInput").value.trim();
+  if (pwd.length < 4) {
+    alert("Password minimal 4 karakter!");
+    return;
+  }
+  set(ref(db, `devices/${DEVICE}/commands`), {
+    action: "lock",
+    password: pwd,
+    timestamp: Date.now()
+  })
+  .then(() => setStatus("Perintah LOCK dikirim<br><small>Password: " + pwd + "</small>"))
+  .catch(err => setStatus("Error: " + err.message));
+};
+
+onValue(ref(db, `devices/${DEVICE}/result`), (snap) => {
+  const data = snap.val();
+  if (!data) return;
+  const waktu = new Date().toLocaleTimeString();
+  setStatus("<b>" + (data.status || "-") + "</b><br><small>" + waktu + "</small>");
+});
+</script>
+
+<!-- ANTI-SALIP JS -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('copy', e => e.preventDefault());
+  document.addEventListener('cut', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('selectstart', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag !== 'input' && tag !== 'textarea') e.preventDefault();
+  });
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const isInput = tag === 'input' || tag === 'textarea';
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (isInput && ctrl && ['c','v','x','a'].includes(e.key.toLowerCase())) return;
+    if (ctrl && ['c','x','a','u','s'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+</script>
+</body>
+  </html>
