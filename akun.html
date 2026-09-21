@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  /* ============ THEME DARK (default) ============ */
   :root {
     --bg: #050506;
     --panel: #16181d;
@@ -18,7 +17,6 @@
     --muted: #8a8f9c;
     --line: #2b2f38;
     --accent: #ff8a00;
-    --accent-2: #ff4500;
     --gold: #ffcc00;
     --pink: #ff2d6b;
     --topbar-bg: linear-gradient(180deg, rgba(255,45,107,.98), rgba(230,30,90,.92));
@@ -28,7 +26,6 @@
     --sidebar-bg: #0b0d12;
     --nav-bg: rgba(20,20,20,.95);
   }
-
   html[data-theme="dark"] {
     --bg: #050506; --panel: #16181d; --panel-2: #1e2128; --card: #232730;
     --ink: #f5f0ea; --muted: #8a8f9c; --line: #2b2f38;
@@ -39,20 +36,9 @@
     --sidebar-bg: #0b0d12;
     --nav-bg: rgba(20,20,20,.95);
   }
-
-  /* ============ THEME KOMIK ============ */
   html[data-theme="comic"] {
-    --bg: #f2f2f2;
-    --panel: #ffffff;
-    --panel-2: #f7f7f7;
-    --card: #ffffff;
-    --ink: #0b0b0b;
-    --muted: #4a4a4a;
-    --line: #0b0b0b;
-    --accent: #ff8a00;
-    --accent-2: #ff4500;
-    --gold: #f59e0b;
-    --pink: #db2777;
+    --bg: #f2f2f2; --panel: #ffffff; --panel-2: #f7f7f7; --card: #ffffff;
+    --ink: #0b0b0b; --muted: #4a4a4a; --line: #0b0b0b;
     --topbar-bg: #ffffff;
     --footer-gray: #6b7280;
     --shadow-card: 0 4px 0 #000;
@@ -86,7 +72,7 @@
     background-size: 10px 10px;
   }
 
-  /* ==== TOP BAR ==== */
+  /* TOP BAR */
   .topbar {
     position: sticky; top: 0; z-index: 20;
     display: flex; align-items: center; justify-content: space-between;
@@ -151,7 +137,7 @@
   }
   .circle-btn:active { transform: scale(.9); }
 
-  /* ==== CONTAINER ==== */
+  /* CONTAINER */
   .container {
     position: relative; z-index: 1;
     width: 100%; max-width: 440px; margin: 0 auto;
@@ -159,7 +145,7 @@
     display: flex; flex-direction: column; gap: 14px;
   }
 
-  /* ==== SPIDER BAR ==== */
+  /* SPIDER BAR */
   .spider-bar {
     display: flex; align-items: center; gap: 10px;
     margin-bottom: 4px;
@@ -199,7 +185,7 @@
     box-shadow: 0 0 14px rgba(255,45,107,.7);
   }
 
-  /* ==== VIDEO BANNER ==== */
+  /* VIDEO BANNER */
   .video-banner {
     position: relative;
     background: #1a1c22;
@@ -252,7 +238,56 @@
     pointer-events: none;
   }
 
-  /* ==== USER CARD ==== */
+  /* THEME TOGGLE */
+  .theme-toggle-card {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: var(--shadow-card);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+  }
+  html[data-theme="comic"] .theme-toggle-card { background: #fff; }
+  .theme-toggle-label {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 11px; letter-spacing: 2px;
+    color: var(--ink);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .theme-toggle-label .star {
+    color: var(--gold);
+    font-size: 14px;
+    text-shadow: 0 0 8px var(--gold);
+  }
+  .theme-switch {
+    display: flex; gap: 6px;
+    padding: 5px;
+    background: var(--panel-2);
+    border: 2.5px solid var(--line);
+    border-radius: 999px;
+    box-shadow: 0 3px 0 #000;
+  }
+  html[data-theme="comic"] .theme-switch { background: #fff; }
+  .theme-switch button {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 900; font-size: 10px; letter-spacing: 2px;
+    padding: 7px 12px;
+    border: 2px solid var(--line); border-radius: 999px;
+    background: transparent; color: var(--ink);
+    cursor: pointer;
+    transition: transform .15s, background .25s, color .25s, box-shadow .25s;
+  }
+  .theme-switch button.active {
+    background: linear-gradient(180deg, #ffb340, #ff8a00);
+    color: #0b0b0b;
+    border-color: #000;
+    box-shadow: 0 0 14px rgba(255,160,0,.9), 0 0 26px rgba(255,90,0,.6);
+    transform: scale(1.05);
+  }
+  .theme-switch button:active { transform: scale(.94); }
+
+  /* USER CARD */
   .user-card {
     position: relative;
     background: var(--panel);
@@ -261,6 +296,7 @@
     padding: 16px;
     box-shadow: var(--shadow-card);
   }
+  html[data-theme="comic"] .user-card { background: #fff; }
   .user-head {
     display: flex; align-items: flex-start; gap: 12px;
   }
@@ -455,7 +491,7 @@
   .stat-badge.orange { background: #f97316; color: #000; }
   .stat-badge.yellow { background: #facc15; color: #000; }
 
-  /* ==== QUICK ACTIONS HEADER ==== */
+  /* QUICK ACTIONS HEADER */
   .qa-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-top: 6px;
@@ -499,7 +535,7 @@
     color: #0b0b0b;
   }
 
-  /* ==== QUICK ACTION CARDS ==== */
+  /* QUICK ACTION CARDS */
   .qa-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 10px; margin-top: 10px;
@@ -523,9 +559,7 @@
   .qa-card.orange  { background: linear-gradient(135deg, #fb923c, #ea580c); }
   .qa-card.dark    { background: linear-gradient(135deg, #1f2937, #0f172a); }
   .qa-card.blue    { background: linear-gradient(135deg, #06b6d4, #0369a1); }
-  .qa-card.purple  { background: linear-gradient(135deg, #a855f7, #6b21a8); }
   .qa-card.magenta { background: linear-gradient(135deg, #db2777, #831843); }
-  .qa-card.cyan    { background: linear-gradient(135deg, #22d3ee, #0e7490); color: #000; }
 
   .qa-card .icon-box {
     width: 32px; height: 32px;
@@ -556,7 +590,7 @@
     opacity: .9;
   }
 
-  /* ==== JADWAL SHOLAT ==== */
+  /* JADWAL SHOLAT */
   .sholat-card {
     background: var(--panel);
     border: 3px solid var(--line);
@@ -565,6 +599,7 @@
     box-shadow: var(--shadow-card);
     margin-top: 6px;
   }
+  html[data-theme="comic"] .sholat-card { background: #fff; }
   .sholat-head {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
@@ -631,7 +666,7 @@
     color: var(--ink); margin: 0;
   }
 
-  /* ==== BERITA ==== */
+  /* BERITA */
   .news-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-top: 6px;
@@ -647,7 +682,7 @@
     color: var(--gold);
     box-shadow: 0 0 14px rgba(255,204,0,.35);
   }
-  html[data-theme="comic"] .news-title { background: #fff; }
+  html[data-theme="comic"] .news-title { background: #fff; color: #a16207; border-color: #a16207; }
   .news-all {
     font-family: "Orbitron", sans-serif;
     font-weight: 900; font-size: 10px; letter-spacing: 2px;
@@ -673,12 +708,18 @@
     box-shadow: var(--shadow-card);
     scroll-snap-align: start;
     text-decoration: none; color: inherit;
+    display: flex; flex-direction: column;
   }
+  html[data-theme="comic"] .news-card { background: #fff; }
   .news-img {
     width: 100%; height: 130px;
     background-size: cover; background-position: center;
     background-color: #2a2d35;
     position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 40px; letter-spacing: 4px;
+    color: rgba(255,255,255,.15);
   }
   .news-badge {
     position: absolute; top: 10px; right: 10px;
@@ -705,7 +746,7 @@
     color: var(--muted);
   }
 
-  /* ==== SMXL CORE CREW ==== */
+  /* SMXL CORE CREW */
   .crew-card {
     background: var(--crew-bg);
     border: 3px solid var(--line);
@@ -714,6 +755,7 @@
     box-shadow: var(--shadow-card);
     margin-top: 6px;
   }
+  html[data-theme="comic"] .crew-card { background: #fff; }
   .crew-title {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 6px 14px;
@@ -778,7 +820,7 @@
   .crew-tag.pink { color: #ff2d6b; }
   .crew-tag.gold { color: #d97706; }
 
-  /* ==== SIDEBAR ==== */
+  /* SIDEBAR */
   .sidebar-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,.7);
@@ -809,6 +851,7 @@
     padding: 14px;
     box-shadow: var(--shadow-card);
   }
+  html[data-theme="comic"] .side-user { background: #fff; }
   .side-user-head {
     display: flex; align-items: center; gap: 12px;
     margin-bottom: 10px;
@@ -825,9 +868,7 @@
     color: #fff;
     letter-spacing: 1px;
   }
-  html[data-theme="comic"] .side-avatar {
-    background: #f2f2f2; color: #000;
-  }
+  html[data-theme="comic"] .side-avatar { background: #f2f2f2; color: #000; }
   .side-avatar::after {
     content: "";
     position: absolute; inset: -3px;
@@ -871,6 +912,7 @@
     cursor: pointer;
     transition: transform .12s;
   }
+  html[data-theme="comic"] .side-item { background: #fff; }
   .side-item:active { transform: scale(.97); }
   .side-item .si-icon {
     width: 42px; height: 42px;
@@ -913,55 +955,7 @@
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
   }
 
-  /* ==== THEME TOGGLE (di halaman akun) ==== */
-  .theme-toggle-card {
-    background: var(--panel);
-    border: 3px solid var(--line);
-    border-radius: 14px;
-    padding: 12px;
-    box-shadow: var(--shadow-card);
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 10px;
-  }
-  .theme-toggle-label {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 11px; letter-spacing: 2px;
-    color: var(--ink);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .theme-toggle-label .star {
-    color: var(--gold);
-    font-size: 14px;
-    text-shadow: 0 0 8px var(--gold);
-  }
-  .theme-switch {
-    display: flex; gap: 6px;
-    padding: 5px;
-    background: var(--panel-2);
-    border: 2.5px solid var(--line);
-    border-radius: 999px;
-    box-shadow: 0 3px 0 #000;
-  }
-  html[data-theme="comic"] .theme-switch { background: #fff; }
-  .theme-switch button {
-    font-family: "Orbitron", sans-serif;
-    font-weight: 900; font-size: 10px; letter-spacing: 2px;
-    padding: 7px 12px;
-    border: 2px solid var(--line); border-radius: 999px;
-    background: transparent; color: var(--ink);
-    cursor: pointer;
-    transition: transform .15s, background .25s, color .25s, box-shadow .25s;
-  }
-  .theme-switch button.active {
-    background: linear-gradient(180deg, #ffb340, #ff8a00);
-    color: #0b0b0b;
-    border-color: #000;
-    box-shadow: 0 0 14px rgba(255,160,0,.9), 0 0 26px rgba(255,90,0,.6);
-    transform: scale(1.05);
-  }
-  .theme-switch button:active { transform: scale(.94); }
-
-  /* ==== BOTTOM NAV ==== */
+  /* BOTTOM NAV */
   .bottom-nav {
     position: fixed; left: 50%; bottom: 12px;
     transform: translateX(-50%);
@@ -985,8 +979,9 @@
     gap: 2px; padding: 6px 8px;
     color: var(--muted); text-decoration: none;
     font-family: "Orbitron", sans-serif;
-    font-weight: 700; font-size: 8px; letter-spacing: 1px;
+    font-weight: 700; font-size: 7px; letter-spacing: 1px;
     transition: color .2s, transform .15s;
+    text-align: center;
   }
   .nav-item:active { transform: scale(.9); }
   .nav-item .nav-icon {
@@ -1006,7 +1001,7 @@
     box-shadow: 0 0 14px rgba(255,45,107,.7);
   }
 
-  /* ==== ANIMATIONS ==== */
+  /* ANIMATIONS */
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: .3; }
@@ -1021,6 +1016,7 @@
     .stat-num { font-size: 12px; }
     .qa-card .label { font-size: 10px; }
     .sholat-time { font-size: 11px; }
+    .nav-item { font-size: 6px; }
   }
 </style>
 
@@ -1260,24 +1256,62 @@
       <a class="news-all" href="#">All Berita &gt;</a>
     </div>
     <div class="news-scroll">
-      <a class="news-card" href="#">
-        <div class="news-img" style="background: linear-gradient(135deg, #6b7280, #374151);">
-          <span class="news-badge">BACA</span>
+
+      <a class="news-card" href="https://news.detik.com/berita" target="_blank" rel="noopener">
+        <div class="news-img" style="background: linear-gradient(135deg, #1e3a8a, #0c1e4e);">
+          <span class="news-badge">DETIK</span>
+          DETIK
         </div>
         <div class="news-body">
-          <p class="news-headline">Boikot Menggila! Produk Amerika Telah Disingkirkan dari Supermarket</p>
-          <div class="news-meta">Berita terbaru</div>
+          <p class="news-headline">Prabowo Tegaskan Komitmen Pemerintah Jaga Stabilitas Ekonomi Nasional</p>
+          <div class="news-meta">Detik News</div>
         </div>
       </a>
-      <a class="news-card" href="#">
+
+      <a class="news-card" href="https://www.kompas.com/" target="_blank" rel="noopener">
+        <div class="news-img" style="background: linear-gradient(135deg, #0e7490, #155e75);">
+          <span class="news-badge">KOMPAS</span>
+          KOMPAS
+        </div>
+        <div class="news-body">
+          <p class="news-headline">BMKG Peringatkan Cuaca Ekstrem di Sejumlah Wilayah Indonesia Sepekan ke Depan</p>
+          <div class="news-meta">Kompas.com</div>
+        </div>
+      </a>
+
+      <a class="news-card" href="https://www.cnnindonesia.com/" target="_blank" rel="noopener">
+        <div class="news-img" style="background: linear-gradient(135deg, #b91c1c, #7f1d1d);">
+          <span class="news-badge">CNN</span>
+          CNN
+        </div>
+        <div class="news-body">
+          <p class="news-headline">Timnas Indonesia Bersiap Hadapi Laga Kualifikasi Piala Dunia 2026 Zona Asia</p>
+          <div class="news-meta">CNN Indonesia</div>
+        </div>
+      </a>
+
+      <a class="news-card" href="https://www.tribunnews.com/" target="_blank" rel="noopener">
         <div class="news-img" style="background: linear-gradient(135deg, #7c3aed, #4c1d95);">
-          <span class="news-badge">BACA</span>
+          <span class="news-badge">TRIBUN</span>
+          TRIBUN
         </div>
         <div class="news-body">
-          <p class="news-headline">Peserta Magang Gaji Daftar Lengkap Uang</p>
-          <div class="news-meta">Berita terbaru</div>
+          <p class="news-headline">Harga Pangan di Sejumlah Daerah Alami Penurunan Jelang Akhir Tahun</p>
+          <div class="news-meta">Tribunnews</div>
         </div>
       </a>
+
+      <a class="news-card" href="https://www.liputan6.com/" target="_blank" rel="noopener">
+        <div class="news-img" style="background: linear-gradient(135deg, #ca8a04, #78350f);">
+          <span class="news-badge">LIPUTAN6</span>
+          LIPUTAN6
+        </div>
+        <div class="news-body">
+          <p class="news-headline">Kemendikbud Luncurkan Program Digitalisasi Sekolah untuk Tingkatkan Mutu Pendidikan</p>
+          <div class="news-meta">Liputan6</div>
+        </div>
+      </a>
+
     </div>
 
     <!-- SMXL CORE CREW -->
@@ -1289,13 +1323,13 @@
         <div class="crew-item">
           <div class="crew-icon">&lt;/&gt;</div>
           <p class="crew-role">Developer</p>
-          <p class="crew-user">@MaulEnv404</p>
+          <p class="crew-user">@S4MX1L</p>
           <span class="crew-tag pink">LEAD CODER</span>
         </div>
         <div class="crew-item">
           <div class="crew-icon">*</div>
           <p class="crew-role">Pemilik</p>
-          <p class="crew-user">@yanzzyow</p>
+          <p class="crew-user">@S4MX1L</p>
           <span class="crew-tag gold">FOUNDER</span>
         </div>
         <div class="crew-item">
@@ -1329,9 +1363,9 @@
       <p class="side-access">Access Until: Permanent</p>
     </div>
 
-    <a class="side-item" href="#">
-      <span class="si-icon pink">A</span>
-      <span class="si-label">BUG SMXL</span>
+    <a class="side-item" href="menuu.html">
+      <span class="si-icon pink">Q</span>
+      <span class="si-label">QUICK ACTIONS</span>
       <span class="si-arrow">&gt;</span>
     </a>
 
@@ -1362,9 +1396,9 @@
       <span class="nav-icon">@</span>
       <span>WA Menu</span>
     </a>
-    <a class="nav-item" href="#">
-      <span class="nav-icon">U</span>
-      <span>Bug Group</span>
+    <a class="nav-item" href="menuu.html">
+      <span class="nav-icon">Q</span>
+      <span>Quick Actions</span>
     </a>
     <a class="nav-item" href="dashboard.html">
       <span class="nav-icon">T</span>
@@ -1378,7 +1412,7 @@
    ========================================================= */
 const BOT_API_URL = "http://127.0.0.1:8080";
 
-/* ===== THEME: LOAD & TOGGLE ===== */
+/* THEME */
 const html = document.documentElement;
 const btnComic = document.getElementById('btnComic');
 const btnDark  = document.getElementById('btnDark');
@@ -1397,7 +1431,7 @@ setTheme(saved);
 btnComic.addEventListener('click', () => setTheme('comic'));
 btnDark.addEventListener('click', () => setTheme('dark'));
 
-/* ===== SIDEBAR TOGGLE ===== */
+/* SIDEBAR */
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 document.getElementById('btnMenu').addEventListener('click', () => {
@@ -1409,7 +1443,7 @@ overlay.addEventListener('click', () => {
   overlay.classList.remove('show');
 });
 
-/* ===== LOAD USER & ROLE ===== */
+/* USER & ROLE */
 const elUsername = document.getElementById('valUsername');
 const elRole = document.getElementById('valRole');
 const elSideEmail = document.getElementById('sideEmail');
@@ -1454,7 +1488,7 @@ function renderRole(role) {
 
 loadAccount();
 
-/* ===== BATERAI ===== */
+/* BATERAI */
 if (navigator.getBattery) {
   navigator.getBattery().then(b => {
     const pct = Math.round(b.level * 100);
@@ -1468,7 +1502,7 @@ if (navigator.getBattery) {
   }).catch(() => {});
 }
 
-/* ===== JARINGAN ===== */
+/* JARINGAN */
 function updateNet() {
   const online = navigator.onLine;
   const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
@@ -1481,7 +1515,7 @@ updateNet();
 window.addEventListener('online', updateNet);
 window.addEventListener('offline', updateNet);
 
-/* ===== VIDEO BANNER: AUTOPLAY + LOOP + TANPA KONTROL ===== */
+/* VIDEO */
 const video = document.getElementById('bannerVideo');
 
 function tryPlay() {
